@@ -1,0 +1,23 @@
+{
+  "name": "cube",
+  "version": "1.0.0",
+  "description": "Cube drafting and management web application.",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "\u0016https://github.com/Awood0511/CubeProject.git"
+  },
+  "author": "Adam Wood",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "morgan": "^1.9.1",
+    "mysql": "^2.16.0",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {}
+}

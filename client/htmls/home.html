@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Adam Wood's Website</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <style type="text/css">
+  </style>
+</head>
+<body ng-app=homeApplication>
+  <div ng-controller="homeController">
+    <h1 style="text-align:center"> {{length}} </h1>
+    <table style="text-align:center">
+      <tr>
+        <th colspan="8"> Full Cube </th>
+      </tr>
+      <tr ng-repeat="card in cardsIn8s">
+        <td><img src="../images/card_images/{{card.card1_id}}.jpg" border=3 height=208 width=141></td>
+        <td><img src="../images/card_images/{{card.card2_id}}.jpg" border=3 height=208 width=141></td>
+        <td><img src="../images/card_images/{{card.card3_id}}.jpg" border=3 height=208 width=141></td>
+        <td><img src="../images/card_images/{{card.card4_id}}.jpg" border=3 height=208 width=141></td>
+        <td><img src="../images/card_images/{{card.card5_id}}.jpg" border=3 height=208 width=141></td>
+        <td><img src="../images/card_images/{{card.card6_id}}.jpg" border=3 height=208 width=141></td>
+        <td><img src="../images/card_images/{{card.card7_id}}.jpg" border=3 height=208 width=141></td>
+        <td><img src="../images/card_images/{{card.card8_id}}.jpg" border=3 height=208 width=141></td>
+      </tr>
+    </table>
+  </div>
+
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+<script src="https://code.angularjs.org/1.4.3/angular.js"></script>
+<script src="../controllers/home_controller.js"></script>
+</body>
+</html>

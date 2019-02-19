@@ -1,0 +1,360 @@
+Champion of the Parish
+Dauntless Bodyguard
+Kytheon, Hero of Akros
+Mother of Runes
+Soldier of the Pantheon
+Adanto Vanguard
+Auriok Champion
+Bounty Agent
+Glory-Bound Initiate
+Knight of Grace
+Knight of the White Orchid
+Seeker of the Way
+Selfless Spirit
+Soulfire Grand Master
+Thalia's Lieutenant
+Wall of Omens
+Benalish Marshal
+Blade Splicer
+Brimaz, King of Oreskos
+Devoted Crop-Mate
+Flickerwisp
+Mirran Crusader
+Thalia, Heretic Cathar
+Kwende, Pride of Femeref
+Odric, Lunarch Marshal
+Restoration Angel
+Angel of Invention
+Angel of Sanctions
+Baneslayer Angel
+Thalia's Lancers
+Sun Titan
+Avacyn, Angel of Hope
+Gideon, Ally of Zendikar
+Gideon Jura
+Elspeth, Sun's Champion
+Porcelain Legionnaire
+Cataclysmic Gearhulk
+Swords to Plowshares
+Blessed Alliance
+Settle the Wreckage
+Declaration in Stone
+Lingering Souls
+Wrath of God
+Legion's Landing
+Journey to Nowhere
+Banishing Light
+History of Benalia
+Oblivion Ring
+Cast Out
+Spear of Heliod
+Delver of Secrets
+Baral, Chief of Compliance
+Looter il-Kor
+Merfolk Trickster
+Phantasmal Image
+Thing in the Ice
+Warkite Marauder
+Champion of Wits
+Kefnet the Mindful
+Nimble Obstructionist
+Sai, Master Thopterist
+Spellseeker
+Vendilion Clique
+Murmuring Mystic
+Naru Meha, Master Wizard
+Venser, Shaper Savant
+Mulldrifter
+Teferi, Mage of Zhalfir
+Draining Whelk
+Frost Titan
+Jace, Architect of Thought
+Phyrexian Metamorph
+Torrential Gearhulk
+Opt
+Spell Pierce
+Thought Scour
+Blink of an Eye
+Essence Scatter
+Mana Leak
+Negate
+Remand
+Disallow
+Metallic Rebuke
+Supreme Will
+Commit // Memory
+Cryptic Command
+Repeal
+Pull from Tomorrow
+Whir of Invention
+Ancestral Vision
+Gitaxian Probe
+Serum Visions
+Chart a Course
+Sift
+Baral's Expertise
+Karn's Temporal Sundering
+Part the Waterveil
+Metamorphic Alteration
+Time of Ice
+Shelldock Isle
+Bloodsoaked Champion
+Cryptbreaker
+Dread Wanderer
+Gatekeeper of Malakir
+Gifted Aetherborn
+Kitesail Freebooter
+Oona's Prowler
+Pack Rat
+Relentless Dead
+Zulaport Cutthroat
+Bontu the Glorified
+Diregraf Colossus
+Flesh Carver
+Geralf's Messenger
+Hypnotic Specter
+Liliana, Heretical Healer
+Midnight Reaper
+Phylactery Lich
+Plague Belcher
+Demonlord of Ashmouth
+Gonti, Lord of Luxury
+Josu Vess, Lich Knight
+Ravenous Chupacabra
+Skinrender
+Gray Merchant of Asphodel
+Ob Nixilis, the Fallen
+Shriekmaw
+Sidisi, Undead Vizier
+Grave Titan
+Tasigur, the Golden Fang
+Gurmag Angler
+Herald of Anguish
+Ob Nixilis Reignited
+Vault Skirge
+Noxious Gearhulk
+Fatal Push
+Cast Down
+Doom Blade
+Go for the Throat
+Hero's Downfall
+To the Slaughter
+Duress
+Inquisition of Kozilek
+Painful Truths
+Ritual of Soot
+Yahenni's Expertise
+Unburial Rites
+Arguel's Blood Fast
+Liliana's Mastery
+The Eldest Reborn
+Goblin Bushwhacker
+Monastery Swiftspear
+Soul-Scar Mage
+Abbot of Keral Keep
+Dark-Dweller Oracle
+Dire Fleet Daredevil
+Earthshaker Khenra
+Kari Zev, Skyship Raider
+Kiln Fiend
+Runaway Steam-Kin
+Ahn-Crop Crasher
+Ball Lightning
+Chandra's Phoenix
+Chandra, Fire of Kaladesh
+Guttersnipe
+Legion Warboss
+Rampaging Ferocidon
+Enthralling Victor
+Goblin Heelcutter
+Hazoret the Fervent
+Hellrider
+Pia and Kiran Nalaar
+Verix Bladewing
+Glorybringer
+Stormbreath Dragon
+Inferno Titan
+Chandra, Torch of Defiance
+Chandra, Flamecaller
+Combustible Gearhulk
+Galvanic Blast
+Lightning Bolt
+Magma Spray
+Abrade
+Ancient Grudge
+Lightning Strike
+Magma Jet
+Chain Lightning
+Faithless Looting
+Cathartic Reunion
+Tormenting Voice
+Anger of the Gods
+Collective Defiance
+Exquisite Firecraft
+Rift Bolt
+Sweltering Suns
+Hour of Devastation
+Banefire
+By Force
+Outpost Siege
+Eidolon of the Great Revel
+Arbor Elf
+Joraga Treespeaker
+Llanowar Elves
+Scute Mob
+Duskwatch Recruiter
+Lotus Cobra
+Sakura-Tribe Elder
+Scavenging Ooze
+Untamed Kavu
+Deathgorge Scavenger
+Eternal Witness
+Managorger Hydra
+Manglehorn
+Nissa, Vastwood Seer
+Prowling Serpopard
+Reclamation Sage
+Rhonas the Indomitable
+Master of the Wild Hunt
+Polukranos, World Eater
+Vizier of the Menagerie
+Wickerbough Elder
+Arborback Stomper
+Ishkanah, Grafwidow
+Thragtusk
+Vorapede
+Multani, Yavimaya's Avatar
+Primeval Titan
+World Breaker
+Terastodon
+Vorinclex, Voice of Hunger
+Garruk Wildspeaker
+Verdurous Gearhulk
+Blossoming Defense
+Ancient Animus
+Dissenter's Deliverance
+Beast Within
+Collected Company
+Become Immense
+Prey Upon
+Traverse the Ulvenwald
+Explore
+Cultivate
+Search for Tomorrow
+Harmonize
+Genesis Wave
+Oath of Nissa
+Rancor
+Utopia Sprawl
+Song of Freyalise
+Courser of Kruphix
+Spell Queller
+Azorius Signet
+Sphinx's Revelation
+Supreme Verdict
+Azorius Chancery
+Tranquil Cove
+Hostage Taker
+Ashiok, Nightmare Weaver
+Baleful Strix
+Dimir Signet
+Dimir Aqueduct
+Dismal Backwater
+Tymaret, the Murder King
+Falkenrath Aristocrat
+Rakdos Signet
+Blightning
+Bloodfell Caves
+Rakdos Carnarium
+Bloodbraid Elf
+Arlinn Kord
+Gruul Signet
+Giantbaiting
+Gruul Turf
+Rugged Highlands
+Fleecemane Lion
+Shanna, Sisay's Legacy
+Selesnya Signet
+March of the Multitudes
+Blossoming Sands
+Selesnya Sanctuary
+Tidehollow Sculler
+Orzhov Signet
+Anguished Unmaking
+Profane Procession
+Orzhov Basilica
+Scoured Barrens
+Spiritmonger
+Golgari Signet
+Abrupt Decay
+Journey to Eternity
+Golgari Rot Farm
+Jungle Hollow
+Trygon Predator
+Tatyova, Benthic Druid
+Simic Signet
+Hadana's Climb
+Simic Growth Chamber
+Thornwood Falls
+Enigma Drake
+Jhoira, Weatherlight Captain
+Izzet Signet
+Electrolyze
+Izzet Boilerworks
+Swiftwater Cliffs
+Boros Reckoner
+Ajani Vengeant
+Boros Signet
+Lightning Helix
+Boros Garrison
+Wind-Scarred Crag
+Nicol Bolas, God-Pharaoh
+Narset, Enlightened Master
+Thought-Knot Seer
+Elder Deep-Fiend
+Artisan of Kozilek
+Void Winnower
+Karn, Scion of Urza
+Signal Pest
+Phyrexian Revoker
+Scrapheap Scrounger
+Spellskite
+Etched Champion
+Filigree Familiar
+Lodestone Golem
+Hollow One
+Sundering Titan
+Bonesplitter
+Chromatic Sphere
+Nihil Spellbomb
+Pithing Needle
+Traveler's Amulet
+Cranial Plating
+Isochron Scepter
+Mind Stone
+Pentad Prism
+Prismatic Lens
+Prophetic Prism
+Smuggler's Copter
+Sorcerous Spyglass
+Swiftfoot Boots
+Oketra's Monument
+Hedron Archive
+Helm of the Host
+Icy Manipulator
+Primal Amulet
+Thran Dynamo
+Skysovereign, Consul Flagship
+God-Pharaoh's Gift
+Aether Hub
+Bojuka Bog
+Darksteel Citadel
+Evolving Wilds
+Gateway Plaza
+Ghost Quarter
+Inventors' Fair
+Mirrorpool
+Mishra's Factory
+Spire of Industry
+Terramorphic Expanse
+Westvale Abbey
