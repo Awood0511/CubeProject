@@ -30,7 +30,7 @@ module.exports.init = function() {
   });
 
   //activate middleware
-  app.use(express.static(path.resolve('./client'))); //serve static files
+  app.use(express.static(path.resolve('./dist')));
   app.use(morgan('dev'));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
@@ -40,11 +40,11 @@ module.exports.init = function() {
 
   //default to homepage
   app.get('/', function(req, res){
-    res.sendFile(path.join(__dirname + '../../../client/htmls/home.html'));
+    res.sendFile(path.join(__dirname + '../../../dist/htmls/home.html'));
   });
 
   app.get('/favicon.ico', function(req,res){
-    res.sendFile(path.join(__dirname + '../../../client/images/god.jpg'));
+    res.sendFile(path.join(__dirname + '../../../dist/images/god.jpg'));
   });
 
 
