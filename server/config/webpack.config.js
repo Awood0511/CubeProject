@@ -1,22 +1,28 @@
-'use strict'
-const path = require('path')
+var path = require("path");
 
-var DIST_DIR = path.resolve(__dirname, "dist");
-var SRC_DIR = path.resolve(__dirname, "src");
-
-const config = {
-    entry: __dirname + '\\..\\..' + '\\src\\app\\index.js',
+var config = {
+    entry: __dirname + "\\..\\.." + "\\src\\app\\index.js",
     output: {
-      path: __dirname + "../../../dist/app",
-      filename: "bundle.js"
+        path: __dirname + "../../../dist/app",
+        filename: "bundle.js",
+        publicPath: "/app/"
     },
     resolve: {
-      extensions: ['.jsx', '.js', '.json']
+      extensions: ['.js', '.jsx']
     },
     module: {
         rules: [
-            { test: /\.jsx?$/, loader: 'babel-loader' }
+            {
+                test: /\.js$/,
+                loader: "babel-loader",
+                exclude: /node_modules/,
+                query: {
+                  presets: ['@babel/react', '@babel/env'],
+                  plugins: ['@babel/plugin-proposal-class-properties']
+                }
+            }
         ]
     }
-}
-module.exports = config
+};
+
+module.exports = config;
