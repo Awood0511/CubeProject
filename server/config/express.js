@@ -43,6 +43,11 @@ module.exports.init = function() {
     res.sendFile(path.join(__dirname + '../../../dist/htmls/home.html'));
   });
 
+  //get a cube visual spoiler from a query string ?id=cube_id
+  app.get('/cube/visual', function(req, res){
+    res.sendFile(path.join(__dirname + '../../../dist/htmls/cube_visual_spoiler.html'));
+  });
+
   app.get('/favicon.ico', function(req,res){
     res.sendFile(path.join(__dirname + '../../../dist/images/god.jpg'));
   });

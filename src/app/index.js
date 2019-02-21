@@ -1,14 +1,3 @@
-import React from "react";
-import {render} from "react-dom";
-
-class App extends React.Component {
-  render() {
-    return (
-      <div>
-        <h1>Test</h1>
-      </div>
-    );
-  }
-}
-
-render(<App/>, window.document.getElementById("app"));
+import {CardTable} from "./components/CardTable/CardTable";
+import {CubeTable} from "./components/CubeTable";
+import {Header} from "./components/Header";

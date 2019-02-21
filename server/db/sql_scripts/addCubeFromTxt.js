@@ -8,11 +8,13 @@ var mysql = require('mysql'),
     dbconfig = require('../../config/dbconfig.js');
 
 var cube_info = {
-  player: "Adam",
-  cube_name: "Adam\'s Cube"
+  player: "MTGO",
+  cube_name: "MTGO Vintage Cube 2018/2019"
 };
 
-var file_path = "./dependencies/adams_cube.txt";
+var insertID;
+
+var file_path = "./dependencies/mtgo_vintage_cube_winter_201819.txt";
 
 //connect to mysql
 var connection = mysql.createConnection({
@@ -37,18 +39,19 @@ connection.query('INSERT INTO Mtgcube SET ?', cube_info, function(err, result){
     return;
   }
   console.log("Created Cube " + cube_info.cube_name);
+  insertID = result.insertId;
   loopThroughTxt();
 }); //end query
 
 //add a card to the cube given its id
 var addCard = function(card){
   var cube_card_info = {
+    cube_id: insertID,
     id: card.id,
-    cube_name: cube_info.cube_name,
     copies: 1
   };
 
-  connection.query('INSERT INTO Cube_card SET ?', cube_card_info, function(err, result){
+  connection.query('INSERT INTO cube_card SET ?', cube_card_info, function(err, result){
     if(err){
       console.log(err);
       return;

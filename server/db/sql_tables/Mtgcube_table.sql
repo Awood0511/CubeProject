@@ -1,8 +1,8 @@
-CREATE TABLE Mtgcube (
+CREATE TABLE mtgcube (
+	cube_id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	player VARCHAR(255) NOT NULL,
-	cube_name VARCHAR(255) UNIQUE NOT NULL,
-	PRIMARY KEY(cube_name)
+	cube_name VARCHAR(255) NOT NULL
 );
 
-CREATE UNIQUE INDEX idx_owner
-ON Mtgcube (cube_name, player);
+CREATE INDEX idx_owner
+ON Mtgcube (player, cube_id);

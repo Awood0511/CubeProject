@@ -12,3 +12,6 @@ CREATE TABLE multiface (
     primary_face tinyint(1),
     FOREIGN KEY (id) REFERENCES Card(id)
 );
+
+CREATE UNIQUE INDEX idx_faces
+ON multiface (mf_id, id);
