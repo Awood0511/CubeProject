@@ -15,3 +15,6 @@ CREATE TABLE multiface (
 
 CREATE UNIQUE INDEX idx_faces
 ON multiface (mf_id, id);
+
+CREATE UNIQUE INDEX idx_cname
+ON multiface (id, cname);

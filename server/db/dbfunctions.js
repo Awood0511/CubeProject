@@ -41,8 +41,6 @@ exports.getCubes = function(req, res) {
 //add cards from a text file to the cube, return any cards that were not added properly
 exports.addTxtToCube = function(req, res){
   var insertID;
-  var maxInserts;
-  var curr = 0;
   var cube_info = {
     player: req.body.player,
     cube_name: req.body.cubename
@@ -59,65 +57,69 @@ exports.addTxtToCube = function(req, res){
     loopThroughTxt();
   }); //end query
 
-  //check if completed inserting or trying to insert all the cards
-  var checkExit = function(){
-    if(curr >= maxInserts){
-      res.send("Done");
+  //add all cards to the cube when passed matching name results
+  var addCards = function(rows){
+    //build insert array from unique card names found in the previous select statement
+    var cube_cards = [];
+    //loop through each result and add it to the array if
+    //it is the first instance of that card name in the list
+    for(var i = 0; i < rows.length; i+=1){
+      var first = true;
+      var k = i-1;
+      //check whether it is the first instance of that card name in the list
+      while(first && k >= 0){
+        if(rows[i].cname === rows[k].cname){
+          first = false;
+        }
+        k -= 1;
+      }
+      if(first){
+        var cube_card = [rows[i].id, insertID, 1];
+        cube_cards.push(cube_card);
+      }
     }
-  }
 
-  //add a card to the cube given its id
-  var addCard = function(card){
-    var cube_card_info = {
-      cube_id: insertID,
-      id: card.id,
-      copies: 1
-    };
-
-    server.connection.query('INSERT INTO cube_card SET ?', cube_card_info, function(err, result){
+    server.connection.query('INSERT INTO cube_card VALUES ?', [cube_cards], function(err, result){
       if(err){
         console.log(err);
-        return;
+        res.status(400).end();
       }
-      console.log("Added card: " + card.cname);
-      curr += 1;
-      checkExit();
+      console.log("Added # of cards: " + result.affectedRows);
+      fs.unlinkSync('./uploads/' + req.file.filename); //delete the uploaded txt file
+      res.status(200).end();
     }); //end query
-  } //end addCard
+  } //end addCards
 
-  //find an id associated with the card name
-  var findCard = function(card){
+  //find all ids associated with the card names in the txt
+  var findCards = function(list){
     try{
-      //if an id is found pass it to addCard
-      var query = "Select id,cname From Multiface where cname = \"" + card + "\"" + "Union SELECT id,cname FROM card where cname = \"" + card + "\"";
+      //if any ids are found pass them to addCards
+      var query = "Select id,cname From multiface where cname IN (" + list + ") Union SELECT id,cname FROM card where cname IN (" + list + ")";
       server.connection.query(query, function(err, rows, fields){
-        if(err){
-          console.log(err);
-          return;
-        }
-
         if(!rows[0]){
-          console.log("Could not find: " + card);
-          curr += 1;
-          checkExit();
+          console.log("Could not find any of the cards.");
+          res.status(200).end();
         } else {
-          addCard(rows[0]);
+          addCards(rows);
         }
       }); //end query
     } catch(err) {
-      console.log("An error occured at card: " + card);
+      console.log("An error occured at findCards in addTxtToCube");
+      res.status(400).end();
     } //end try/catch
-  } //end findCard
+  } //end findCards
 
   var loopThroughTxt = function(){
-    console.log("Begin reading txt file.");
     var allCards = fs.readFileSync('./uploads/' + req.file.filename).toString().split("\n");
-    maxInserts = allCards.length;
-    allCards.forEach(function(card){
+    var searchList = "\"" + allCards[0].substring(0, allCards[0].length-1) + "\""; //first string in list of names
+    for(var i = 1; i < allCards.length; i+=1){
+      //build IN list of all the card names in the txt file
       //remove carriage return from end of card name
-      var trimmedName = card.substring(0, card.length-1);
-      findCard(trimmedName);
-    }); //end forEach
+      var trimmedName = allCards[i].substring(0, allCards[i].length-1);
+      searchList += ", \"" + trimmedName + "\"";
+    }
+    findCards(searchList);
   } //end loopThroughTxt
 
 } //end addTxtToCube
+/*------------------------------------------------------------------------------------------*/
