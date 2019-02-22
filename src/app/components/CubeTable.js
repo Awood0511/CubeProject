@@ -45,7 +45,7 @@ export class CubeTable extends React.Component {
                     <tr>
                       <td>{cube.cube_name}</td>
                       <td>{cube.player}</td>
-                      <td><a href={"/cube/visual?cube_id=" + cube.cube_id}>Link</a></td>
+                      <td><a href={"/cube/visual/" + cube.cube_id}>Link</a></td>
                     </tr>
                   )}
                 </tbody>

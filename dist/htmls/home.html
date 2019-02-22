@@ -10,6 +10,20 @@
 <body>
 <div id="header"></div>
 <div id="cube_table"></div>
+<div class="container">
+  <div class="row">
+    <div class="col md-auto">
+      <form action="/api/cube/42069" method="post" enctype="multipart/form-data">
+        CubeName:
+        <input type="text" name="cubename" required/>
+        PlayerName:
+        <input type="text" name="player" required/>
+        <input type="file" name="cubetxt" required/>
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+  </div>
+</div>
 <script src="/app/bundle.js"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </body>

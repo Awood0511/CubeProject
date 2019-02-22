@@ -9,8 +9,8 @@ export class CardTable extends React.Component {
     this.state = {
       rendered: false
     };
-    const urlParams = new URLSearchParams(window.location.search);
-    this.cube_id = urlParams.get('cube_id');
+    let url = window.location.href;
+    this.cube_id = url.substring(url.lastIndexOf("/")+1, url.length);
     this.cardRows = [];
   }
 
@@ -62,7 +62,7 @@ export class CardTable extends React.Component {
             <div className="col col-md-8 col-md-offset-2">
               <table>
                 <tbody>
-                  {this.cardRows.map(row => <CardRow row={row}/>)}
+                  {this.cardRows.map((row,i) => <CardRow row={row} key={i}/>)}
                 </tbody>
               </table>
             </div>

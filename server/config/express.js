@@ -44,7 +44,7 @@ module.exports.init = function() {
   });
 
   //get a cube visual spoiler from a query string ?id=cube_id
-  app.get('/cube/visual', function(req, res){
+  app.get('/cube/visual/:cube_id', function(req, res){
     res.sendFile(path.join(__dirname + '../../../dist/htmls/cube_visual_spoiler.html'));
   });
 

@@ -1,7 +1,5 @@
 //PURPOSE
 //Creates a Cube and adds all the cards found in a text file to that cube
-//Must contain extra parenthesis around name and owner
-//Can not identify flip cards unless in // seperated format
 
 var mysql = require('mysql'),
     fs = require('fs'),
@@ -80,7 +78,7 @@ var findCard = function(card){
   } catch(err) {
     console.log("An error occured at card: " + card);
   } //end try/catch
-} //end addCardToCube
+} //end findCard
 
 var loopThroughTxt = function(){
   console.log("Begin reading txt file.");
