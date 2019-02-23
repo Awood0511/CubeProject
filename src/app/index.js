@@ -1,3 +1,4 @@
 import {CardTable} from "./components/CardTable/CardTable";
-import {CubeTable} from "./components/CubeTable";
+import {CubeTable} from "./components/CubeTable/CubeTableContainer";
+import {AllCubesTable} from "./components/AllCubesTable";
 import {Header} from "./components/Header";

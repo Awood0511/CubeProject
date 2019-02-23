@@ -2,7 +2,7 @@ import React from "react";
 import {render} from "react-dom";
 import axios from "axios";
 
-export class CubeTable extends React.Component {
+export class AllCubesTable extends React.Component {
   constructor(props) {
     super();
     this.state = {
@@ -37,6 +37,7 @@ export class CubeTable extends React.Component {
                   <tr>
                     <th>Name</th>
                     <th>Owner</th>
+                    <th>Card List</th>
                     <th>Visual Spoiler</th>
                   </tr>
                 </thead>
@@ -45,6 +46,7 @@ export class CubeTable extends React.Component {
                     <tr>
                       <td>{cube.cube_name}</td>
                       <td>{cube.player}</td>
+                      <td><a href={"/cube/view/" + cube.cube_id}>Link</a></td>
                       <td><a href={"/cube/visual/" + cube.cube_id}>Link</a></td>
                     </tr>
                   )}
@@ -65,5 +67,5 @@ export class CubeTable extends React.Component {
 } //end CardTable
 
 try{
-    render(<CubeTable/>, window.document.getElementById("cube_table"));
+    render(<AllCubesTable/>, window.document.getElementById("all_cubes_table"));
 } catch(err) {}
