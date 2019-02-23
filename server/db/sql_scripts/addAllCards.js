@@ -52,6 +52,7 @@ var insertCard = function(card){
   var cardInfo = {
     cmc: card.cmc,
     manacost: card.mana_cost,
+    color: null,
     cname: card.name,
     oracle_text: card.oracle_text,
     flavor_text: card.flavor_text,

@@ -2,6 +2,7 @@ CREATE TABLE Card (
 	id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	cmc int,
 	manacost text,
+	color text,
 	cname VARCHAR(255),
 	oracle_text text,
 	flavor_text text,
