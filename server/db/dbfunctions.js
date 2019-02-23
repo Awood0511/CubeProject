@@ -54,6 +54,7 @@ exports.addTxtToCube = function(req, res){
     }
     console.log("Created Cube " + cube_info.cube_name);
     insertID = result.insertId;
+    console.log("Calling loopThroughTxt");
     loopThroughTxt();
   }); //end query
 
@@ -74,7 +75,7 @@ exports.addTxtToCube = function(req, res){
         k -= 1;
       }
       if(first){
-        var cube_card = [rows[i].id, insertID, 1];
+        var cube_card = [rows[i].id, insertID, rows[i].color, 1];
         cube_cards.push(cube_card);
       }
     }
@@ -94,7 +95,7 @@ exports.addTxtToCube = function(req, res){
   var findCards = function(list){
     try{
       //if any ids are found pass them to addCards
-      var query = "Select id,cname From multiface where cname IN (" + list + ") Union SELECT id,cname FROM card where cname IN (" + list + ")";
+      var query = "Select id,cname,color From multiface where cname IN (" + list + ") Union SELECT id,cname,color FROM card where cname IN (" + list + ")";
       server.connection.query(query, function(err, rows, fields){
         if(!rows[0]){
           console.log("Could not find any of the cards.");

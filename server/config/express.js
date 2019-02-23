@@ -43,17 +43,22 @@ module.exports.init = function() {
     res.sendFile(path.join(__dirname + '../../../dist/htmls/home.html'));
   });
 
-  //get a cube visual spoiler from a query string ?id=cube_id
+  //get a full cube view
+  app.get('/cube/view/:cube_id', function(req, res){
+    res.sendFile(path.join(__dirname + '../../../dist/htmls/cube_view.html'));
+  });
+  //get a cube visual spoiler
   app.get('/cube/visual/:cube_id', function(req, res){
     res.sendFile(path.join(__dirname + '../../../dist/htmls/cube_visual_spoiler.html'));
   });
 
+  //send site image (temporarily George Costanza)
   app.get('/favicon.ico', function(req,res){
     res.sendFile(path.join(__dirname + '../../../dist/images/god.jpg'));
   });
 
 
-  // redirect anything that isnt an pathname specified above
+  // redirect anything that isnt an pathname specified above to home
   app.get('*', function(req, res){
       res.redirect('/');
   });
