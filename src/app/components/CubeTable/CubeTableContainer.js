@@ -31,7 +31,8 @@ export class CubeTableContainer extends React.Component {
           let card = this.cubeCards[i];
           var entry = {
             id: card.id,
-            cname: card.cname
+            cname: card.cname,
+            layout: card.layout
           };
           if(card.color === "White"){
             this.whiteCards.push(entry);
@@ -71,25 +72,33 @@ export class CubeTableContainer extends React.Component {
         <div className="container-fluid">
           <div className="row justify-content-sm-center">
             <div className="col-sm-auto">
-              <CubeTable cards={this.whiteCards} color={"White"}/>
+              <div className="imgrow" id={"imageDiv"}>
+                <div className="imgcol">
+                  <img id={"cardImage1"} src={""} style={{display:'none'}}/>
+                </div>
+                <div className="imgcol">
+                  <img id={"cardImage2"} src={""} style={{display:'none'}}/>
+                </div>
+              </div>
+              <CubeTable cards={this.whiteCards} color={"White"} bgcolor={"#fcffef"} txtcolor={"#000000"}/>
             </div>
             <div className="col-sm-auto">
-              <CubeTable cards={this.blueCards} color={"Blue"}/>
+              <CubeTable cards={this.blueCards} color={"Blue"} bgcolor={"#5b9aff"} txtcolor={"#0400ff"}/>
             </div>
             <div className="col-sm-auto">
-              <CubeTable cards={this.blackCards} color={"Black"}/>
+              <CubeTable cards={this.blackCards} color={"Black"} bgcolor={"#686868"} txtcolor={"#000000"}/>
             </div>
             <div className="col-sm-auto">
-              <CubeTable cards={this.redCards} color={"Red"}/>
+              <CubeTable cards={this.redCards} color={"Red"} bgcolor={"#ed3d3d"} txtcolor={"#ff0000"}/>
             </div>
             <div className="col-sm-auto">
-              <CubeTable cards={this.greenCards} color={"Green"}/>
+              <CubeTable cards={this.greenCards} color={"Green"} bgcolor={"#3bb53b"} txtcolor={"#008e10"}/>
             </div>
             <div className="col-sm-auto">
-              <CubeTable cards={this.otherCards} color={"Multicolor"}/>
+              <CubeTable cards={this.otherCards} color={"Multicolor"} bgcolor={"#eddd53"} txtcolor={"#000000"}/>
             </div>
             <div className="col-sm-auto">
-              <CubeTable cards={this.colorlessCards} color={"Colorless"}/>
+              <CubeTable cards={this.colorlessCards} color={"Colorless"} bgcolor={"#E0E1E0"} txtcolor={"#000000"}/>
             </div>
           </div>
         </div>

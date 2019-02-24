@@ -1,0 +1,17 @@
+/* styling for box that contains pop-in images */
+.imgrow {
+  display: flex;
+  z-index: 1;
+  position: fixed;
+}
+
+.imgcol {
+  flex: 50%;
+  padding-right: 189px;
+}
+
+img {
+  width: 189px;
+  height: 264px;
+  position: absolute;
+}
