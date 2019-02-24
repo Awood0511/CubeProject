@@ -4,17 +4,32 @@ var server = require("../config/express.js"),
 
 /*------------------------------------------------------------------------------------------*/
 
-exports.getCubeCards = function(req, res) {
-  query_str = "select Card.* from Card INNER JOIN Cube_card ON Card.id = Cube_card.id AND Cube_card.cube_id =" + req.cube_id;
+//get card and cube_card information
+exports.getCubeCards = function(req, res, next) {
+  query_str = "select c.*, cc.color as cc_color, cc.main_type, cc.copies from Card as c INNER JOIN Cube_card as cc ON c.id = cc.id AND cc.cube_id =" + req.cube_id;
   server.connection.query(query_str, function(err, rows, fields){
     if(err){
       console.log(err);
       res.status(400);
     } else {
-      res.json(rows);
+      req.cube_cards = rows;
+      next();
     }
   }); //end query
 } //end getCubeCards
+
+//get multiface information for mf cards in the cube
+exports.getCubeMFCards = function(req, res) {
+  query_str = "select mf.* from Card as c INNER JOIN Cube_card as cc ON c.id = cc.id AND cc.cube_id =" + req.cube_id + " INNER JOIN multiface as mf on mf.id = c.id";
+  server.connection.query(query_str, function(err, rows, fields){
+    if(err){
+      console.log(err);
+      res.status(400);
+    } else {
+      res.json([req.cube_cards, rows]);
+    }
+  }); //end query
+} //end getCubeMFCards
 
 /*------------------------------------------------------------------------------------------*/
 

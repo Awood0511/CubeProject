@@ -13,19 +13,102 @@ export class CubeTableContainer extends React.Component {
     this.cube_id = url.substring(url.lastIndexOf("/")+1, url.length);
 
     this.cubeCards; //list of all cards in the cube
-    this.whiteCards = [];
-    this.blueCards = [];
-    this.blackCards = [];
-    this.redCards = [];
-    this.greenCards = [];
-    this.colorlessCards = [];
-    this.otherCards = [];
+    this.mfCards;
+    this.whiteCards = {
+      creatures : [],
+      artifacts : [],
+      enchantments : [],
+      planeswalkers : [],
+      lands : [],
+      instants : [],
+      sorceries : []
+    };
+    this.blueCards = {
+      creatures : [],
+      artifacts : [],
+      enchantments : [],
+      planeswalkers : [],
+      lands : [],
+      instants : [],
+      sorceries : []
+    };
+    this.blackCards = {
+      creatures : [],
+      artifacts : [],
+      enchantments : [],
+      planeswalkers : [],
+      lands : [],
+      instants : [],
+      sorceries : []
+    };
+    this.redCards = {
+      creatures : [],
+      artifacts : [],
+      enchantments : [],
+      planeswalkers : [],
+      lands : [],
+      instants : [],
+      sorceries : []
+    };
+    this.greenCards = {
+      creatures : [],
+      artifacts : [],
+      enchantments : [],
+      planeswalkers : [],
+      lands : [],
+      instants : [],
+      sorceries : []
+    };
+    this.colorlessCards = {
+      creatures : [],
+      artifacts : [],
+      enchantments : [],
+      planeswalkers : [],
+      lands : [],
+      instants : [],
+      sorceries : []
+    };
+    this.otherCards = {
+      creatures : [],
+      artifacts : [],
+      enchantments : [],
+      planeswalkers : [],
+      lands : [],
+      instants : [],
+      sorceries : []
+    };
+  }
+
+  //determines the type then appends to that type's array in the passed object
+  determineType(obj, entry, type) {
+    if(type === "Creature"){
+      obj.creatures.push(entry);
+    }
+    else if(type === "Artifact"){
+      obj.artifacts.push(entry);
+    }
+    else if(type === "Enchantment"){
+      obj.enchantments.push(entry);
+    }
+    else if(type === "Planeswalker"){
+      obj.planeswalkers.push(entry);
+    }
+    else if(type === "Land"){
+      obj.lands.push(entry);
+    }
+    else if(type === "Instant"){
+      obj.instants.push(entry);
+    }
+    else{
+      obj.sorceries.push(entry);
+    }
   }
 
   componentDidMount() {
     axios.get("/api/cube/" + this.cube_id).then(
       response => {
-        this.cubeCards = response.data;
+        this.cubeCards = response.data[0];
+        this.mfCards = response.data[1];
         //add cards to sublists by color identity
         for(let i = 0; i < this.cubeCards.length; i+=1){
           let card = this.cubeCards[i];
@@ -34,26 +117,37 @@ export class CubeTableContainer extends React.Component {
             cname: card.cname,
             layout: card.layout
           };
+
+          //replace transform card names with only the front side
+          if(card.layout === "transform"){
+            var k = 0;
+            while(card.id != this.mfCards[k].id || this.mfCards[k].primary_face != 1){
+              k+=1;
+            }
+            entry.cname = this.mfCards[k].cname;
+          }
+
+          //check which color it is
           if(card.color === "White"){
-            this.whiteCards.push(entry);
+            this.determineType(this.whiteCards, entry, card.main_type);
           }
           else if(card.color === "Blue"){
-            this.blueCards.push(entry);
+            this.determineType(this.blueCards, entry, card.main_type);
           }
           else if(card.color === "Black"){
-            this.blackCards.push(entry);
+            this.determineType(this.blackCards, entry, card.main_type);
           }
           else if(card.color === "Red"){
-            this.redCards.push(entry);
+            this.determineType(this.redCards, entry, card.main_type);
           }
           else if(card.color === "Green"){
-            this.greenCards.push(entry);
+            this.determineType(this.greenCards, entry, card.main_type);
           }
           else if(card.color === "Colorless"){
-            this.colorlessCards.push(entry);
+            this.determineType(this.colorlessCards, entry, card.main_type);
           }
           else{
-            this.otherCards.push(entry);
+            this.determineType(this.otherCards, entry, card.main_type);
           }
         }
         this.setState({

@@ -7,11 +7,34 @@
 
 .imgcol {
   flex: 50%;
-  padding-right: 189px;
+  padding-right: 252px;
 }
 
+/* Mtg card dimensions w x h => 63x88 */
 img {
-  width: 189px;
-  height: 264px;
+  width: 252px;
+  height: 352px;
   position: absolute;
+}
+
+th {
+  text-align: center;
+  font-size: 13pt;
+}
+
+td {
+  font-size: 12pt;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+
+td.special_td {
+  text-align: center;
+  font-size: 13pt;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }

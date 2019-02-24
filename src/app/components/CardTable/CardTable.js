@@ -17,7 +17,7 @@ export class CardTable extends React.Component {
   componentDidMount() {
     axios.get("/api/cube/" + this.cube_id).then(
       response => {
-        let cards = response.data;
+        let cards = response.data[0];
         for(let i = 0; i < cards.length; i=i+5){
           let row = {
             id1: 0,

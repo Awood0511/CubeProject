@@ -1,4 +1,5 @@
 import React from "react";
+import $ from "jquery";
 
 export class CubeTable extends React.Component {
   constructor(props) {
@@ -9,15 +10,15 @@ export class CubeTable extends React.Component {
       hoverID: 0
     }
 
-    //variables to hold the mouses location whenever it moves over a table
+    //variables to hold the mouses location
     this.x = 0;
     this.y = 0;
   }
 
   //updates mouse position. Also updates image position, but only if hovering
   handleMouseMove(e) {
-    this.x = e.pageX;
-    this.y = e.pageY;
+    this.x = e.screenX;
+    this.y = e.screenY;
 
     if(this.state.hovering){
       //get relevant dom element data
@@ -32,10 +33,12 @@ export class CubeTable extends React.Component {
       if(this.state.transform){
         image2.src = '/../images/card_images/' + this.state.hoverID + '_2.jpg';
       }
-      div.style.left = (this.x + 2) + "px";
-      div.style.top = rect_row.bottom + "px";
+
+      div.style.top = (this.y - 100) + "px";
+      div.style.left = (this.x + 15) + "px";
+
     }
-  }
+  } //end handleMouseMove
 
   render() {
 
@@ -73,18 +76,84 @@ export class CubeTable extends React.Component {
     var showImg = showImgUnbound.bind(this);
     var hideImg = hideImgUnbound.bind(this);
 
+    var colorCnt = this.props.cards.creatures.length + this.props.cards.artifacts.length + this.props.cards.enchantments.length +
+    this.props.cards.planeswalkers.length + this.props.cards.lands.length + this.props.cards.instants.length + this.props.cards.sorceries.length;
+
     return (
       <table style={{backgroundColor: this.props.bgcolor}} onMouseMove={this.handleMouseMove.bind(this)}>
         <thead>
           <tr>
-            <th style={{color: this.props.txtcolor}}>{this.props.color}</th>
+            <th style={{color: this.props.txtcolor}}>{this.props.color + " (" + colorCnt + ")"}</th>
           </tr>
         </thead>
         <tbody>
-          {this.props.cards.map(function(row) {
+          <tr style={{display: (this.props.cards.creatures.length > 0) ? '' : 'none'}}>
+            <td className="special_td" style={{color: this.props.txtcolor}}>Creatures {"(" + this.props.cards.creatures.length + ")"}</td>
+          </tr>
+          {this.props.cards.creatures.map(function(row) {
             return (
               <tr key={row.id} onMouseEnter={function(){ showImg(row) }} onMouseLeave={function(){ hideImg(row) }} id={row.id + "_row"}>
-                <td style={{fontSize: "12pt"}} id={row.id + "_data"}>{row.cname}</td>
+                <td id={row.id + "_data"}>{row.cname}</td>
+              </tr>
+            );
+          }, this)}
+          <tr style={{display: (this.props.cards.artifacts.length > 0) ? '' : 'none'}}>
+            <td className="special_td" style={{color: this.props.txtcolor}}>Artifacts {"(" + this.props.cards.artifacts.length + ")"}</td>
+          </tr>
+          {this.props.cards.artifacts.map(function(row) {
+            return (
+              <tr key={row.id} onMouseEnter={function(){ showImg(row) }} onMouseLeave={function(){ hideImg(row) }} id={row.id + "_row"}>
+                <td id={row.id + "_data"}>{row.cname}</td>
+              </tr>
+            );
+          }, this)}
+          <tr style={{display: (this.props.cards.enchantments.length > 0) ? '' : 'none'}}>
+            <td className="special_td" style={{color: this.props.txtcolor}}>Enchantments {"(" + this.props.cards.enchantments.length + ")"}</td>
+          </tr>
+          {this.props.cards.enchantments.map(function(row) {
+            return (
+              <tr key={row.id} onMouseEnter={function(){ showImg(row) }} onMouseLeave={function(){ hideImg(row) }} id={row.id + "_row"}>
+                <td id={row.id + "_data"}>{row.cname}</td>
+              </tr>
+            );
+          }, this)}
+          <tr style={{display: (this.props.cards.planeswalkers.length > 0) ? '' : 'none'}}>
+            <td className="special_td" style={{color: this.props.txtcolor}}>Planeswalkers {"(" + this.props.cards.planeswalkers.length + ")"}</td>
+          </tr>
+          {this.props.cards.planeswalkers.map(function(row) {
+            return (
+              <tr key={row.id} onMouseEnter={function(){ showImg(row) }} onMouseLeave={function(){ hideImg(row) }} id={row.id + "_row"}>
+                <td id={row.id + "_data"}>{row.cname}</td>
+              </tr>
+            );
+          }, this)}
+          <tr style={{display: (this.props.cards.lands.length > 0) ? '' : 'none'}}>
+            <td className="special_td" style={{color: this.props.txtcolor}}>Lands {"(" + this.props.cards.lands.length + ")"}</td>
+          </tr>
+          {this.props.cards.lands.map(function(row) {
+            return (
+              <tr key={row.id} onMouseEnter={function(){ showImg(row) }} onMouseLeave={function(){ hideImg(row) }} id={row.id + "_row"}>
+                <td id={row.id + "_data"}>{row.cname}</td>
+              </tr>
+            );
+          }, this)}
+          <tr style={{display: (this.props.cards.instants.length > 0) ? '' : 'none'}}>
+            <td className="special_td" style={{color: this.props.txtcolor}}>Instants {"(" + this.props.cards.instants.length + ")"}</td>
+          </tr>
+          {this.props.cards.instants.map(function(row) {
+            return (
+              <tr key={row.id} onMouseEnter={function(){ showImg(row) }} onMouseLeave={function(){ hideImg(row) }} id={row.id + "_row"}>
+                <td id={row.id + "_data"}>{row.cname}</td>
+              </tr>
+            );
+          }, this)}
+          <tr style={{display: (this.props.cards.sorceries.length > 0) ? '' : 'none'}}>
+            <td className="special_td" style={{color: this.props.txtcolor}}>Sorceries {"(" + this.props.cards.sorceries.length + ")"}</td>
+          </tr>
+          {this.props.cards.sorceries.map(function(row) {
+            return (
+              <tr key={row.id} onMouseEnter={function(){ showImg(row) }} onMouseLeave={function(){ hideImg(row) }} id={row.id + "_row"}>
+                <td id={row.id + "_data"}>{row.cname}</td>
               </tr>
             );
           }, this)}

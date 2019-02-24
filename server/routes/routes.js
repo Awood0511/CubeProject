@@ -11,7 +11,7 @@ router.route('/cube')
       .get(dbfunctions.getCubes);
 
 router.route('/cube/:cube_id')
-  .get(dbfunctions.getCubeCards)
+  .get(dbfunctions.getCubeCards, dbfunctions.getCubeMFCards)
   .post(uploads.single('cubetxt'), dbfunctions.addTxtToCube);
 
 router.param('cube_id', dbfunctions.cubeByID);
