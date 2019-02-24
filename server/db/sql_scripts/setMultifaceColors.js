@@ -1,8 +1,11 @@
 //PURPOSE
-//
+//Finds colors for multiface cards and updates the color to the main card table
+//only updates transform cards to the main card table, split cards will be correct
 
 var mysql = require('mysql'),
     dbconfig = require('../../config/dbconfig.js');
+
+var allColorsDone = 0;
 
 //connect to mysql
 var connection = mysql.createConnection({
@@ -21,13 +24,38 @@ connection.connect(function(error){
 });
 
 //get all cards from the cube that are being updated
-connection.query("select id,manacost from card where manacost is not null", function(err, rows, fields){
+connection.query("select mf_id,manacost from multiface where manacost is not null", function(err, rows, fields){
   if(err){
     console.log(err);
     return;
   }
   determineColors(rows);
 }); //end query
+
+//set all of the colors in card equal to the color of the primary faces in multiface
+var updatePrimaryFacesInCard = function(){
+  var query = "select id,color,manacost from multiface where primary_face = 1 and layout = \"transform\"";
+  connection.query(query, function(err, rows, fields){
+    if(err){
+      console.log(err);
+      return;
+    }
+
+    //for each result, update id in card to have color
+    rows.forEach(function(mf){
+      var query2 = "update card set color =\"" + mf.color + "\", manacost = \"" + mf.manacost + "\" where id = " + mf.id;
+      connection.query(query2, function(err, result){
+        if(err){
+          console.log(err);
+          return;
+        }
+
+        console.log("Updated " + mf.id);
+      }); //end query
+    });
+  }); //end query
+
+}
 
 //insert cardColor into the db for each id in cardArr
 var insertColors = function(cardArr, cardColor){
@@ -36,13 +64,22 @@ var insertColors = function(cardArr, cardColor){
   for(var i = 1; i < cardArr.length; i+=1){
     list += ", " + cardArr[i];
   }
-  var query = "Update card set color = \"" + cardColor + "\" where id in (" + list + ")";
+  var query = "Update multiface set color = \"" + cardColor + "\" where mf_id in (" + list + ")";
   connection.query(query, function(err, result){
     if(err){
-      console.log(err);
+      console.log("Nothing found of color: " + cardColor);
+      allColorsDone+=1;
+      if(allColorsDone === 32){
+        updatePrimaryFacesInCard();
+      }
       return;
     }
     console.log("Updated all " + cardColor);
+
+    allColorsDone+=1;
+    if(allColorsDone === 32){
+      updatePrimaryFacesInCard();
+    }
   }); //end query
 }
 
@@ -88,100 +125,100 @@ var determineColors = function(allCards) {
             g = card.manacost.includes("{G}");
 
         if(w&&u&&b&&r&&g){
-          rainbow.push(card.id);
+          rainbow.push(card.mf_id);
         }
         else if(w&&u&&b&&r){
-          nongreen.push(card.id);
+          nongreen.push(card.mf_id);
         }
         else if(w&&u&&b&&g){
-          nonred.push(card.id);
+          nonred.push(card.mf_id);
         }
         else if(w&&u&&r&&g){
-          nonblack.push(card.id);
+          nonblack.push(card.mf_id);
         }
         else if(w&&b&&r&&g){
-          nonblue.push(card.id);
+          nonblue.push(card.mf_id);
         }
         else if(u&&b&&r&&g){
-          nonwhite.push(card.id);
+          nonwhite.push(card.mf_id);
         }
         else if(r&&g&&b){
-          jund.push(card.id);
+          jund.push(card.mf_id);
         }
         else if(w&&g&&u){
-          bant.push(card.id);
+          bant.push(card.mf_id);
         }
         else if(b&&r&&u){
-          grixis.push(card.id);
+          grixis.push(card.mf_id);
         }
         else if(g&&w&&r){
-          naya.push(card.id);
+          naya.push(card.mf_id);
         }
         else if(u&&w&&b){
-          esper.push(card.id);
+          esper.push(card.mf_id);
         }
         else if(u&&r&&w){
-          jeskai.push(card.id);
+          jeskai.push(card.mf_id);
         }
         else if(r&&b&&w){
-          mardu.push(card.id);
+          mardu.push(card.mf_id);
         }
         else if(b&&g&&u){
-          sultai.push(card.id);
+          sultai.push(card.mf_id);
         }
         else if(g&&u&&r){
-          temur.push(card.id);
+          temur.push(card.mf_id);
         }
         else if(w&&b&&g){
-          abzan.push(card.id);
+          abzan.push(card.mf_id);
         }
         else if(w&&u){
-          azorius.push(card.id);
+          azorius.push(card.mf_id);
         }
         else if(u&&b){
-          dimir.push(card.id);
+          dimir.push(card.mf_id);
         }
         else if(b&&r){
-          rakdos.push(card.id);
+          rakdos.push(card.mf_id);
         }
         else if(g&&r){
-          gruul.push(card.id);
+          gruul.push(card.mf_id);
         }
         else if(w&&g){
-          selesnya.push(card.id);
+          selesnya.push(card.mf_id);
         }
         else if(w&&b){
-          orzhov.push(card.id);
+          orzhov.push(card.mf_id);
         }
         else if(u&&r){
-          izzet.push(card.id);
+          izzet.push(card.mf_id);
         }
         else if(b&&g){
-          golgari.push(card.id);
+          golgari.push(card.mf_id);
         }
         else if(w&&r){
-          boros.push(card.id);
+          boros.push(card.mf_id);
         }
         else if(u&&g){
-          simic.push(card.id);
+          simic.push(card.mf_id);
         }
         else if(w){
-          white.push(card.id);
+          white.push(card.mf_id);
         }
         else if(u){
-          blue.push(card.id);
+          blue.push(card.mf_id);
         }
         else if(b){
-          black.push(card.id);
+          black.push(card.mf_id);
         }
         else if(r){
-          red.push(card.id);
+          red.push(card.mf_id);
         }
         else if(g){
-          green.push(card.id);
+          green.push(card.mf_id);
         }
         else{
-          colorless.push(card.id);
+          colorless.push(card.mf_id);
         }
       }); //end allcards.forEach()
 

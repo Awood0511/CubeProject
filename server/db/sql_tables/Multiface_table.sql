@@ -11,11 +11,9 @@ CREATE TABLE multiface (
 	type_line text,
 	image text,
     primary_face tinyint(1),
+    layout text,
     FOREIGN KEY (id) REFERENCES Card(id)
 );
 
 CREATE UNIQUE INDEX idx_faces
 ON multiface (mf_id, id);
-
-CREATE UNIQUE INDEX idx_cname
-ON multiface (id, cname);

@@ -1,5 +1,5 @@
 // PURPOSE:
-// Run this script to add all the cards images for the cards in the db
+// Run this script to add all the images for the multiface cards in the db
 
 var mysql = require('mysql'),
     request = require('request'),

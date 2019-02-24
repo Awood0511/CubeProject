@@ -5,7 +5,7 @@ var mysql = require('mysql'),
     request = require('request'),
     dbconfig = require('../../config/dbconfig.js');
 
-//missing unsets and mtgo online only sets
+//missing: unsets / mtgo online only sets / promo sets
 var allSets = ['lea', 'leb', '2ed', 'arn', 'atq', '3ed', 'leg', 'drk', 'fem',
                '4ed', 'ice', 'chr', 'hml', 'all', 'mir', 'vis', '5ed', 'por',
                'wth', 'tmp', 'sth', 'exo', 'p02', 'usg', 'ath', 'ulg', '6ed',

@@ -40,7 +40,7 @@ exports.getCubes = function(req, res) {
 /*------------------------------------------------------------------------------------------*/
 //add cards from a text file to the cube, return any cards that were not added properly
 exports.addTxtToCube = function(req, res){
-  var insertID;
+  var cubeId;
   var cube_info = {
     player: req.body.player,
     cube_name: req.body.cubename
@@ -53,7 +53,7 @@ exports.addTxtToCube = function(req, res){
       return;
     }
     console.log("Created Cube " + cube_info.cube_name);
-    insertID = result.insertId;
+    cubeId = result.insertId;
     console.log("Calling loopThroughTxt");
     loopThroughTxt();
   }); //end query
@@ -75,7 +75,31 @@ exports.addTxtToCube = function(req, res){
         k -= 1;
       }
       if(first){
-        var cube_card = [rows[i].id, insertID, rows[i].color, 1];
+        var main_type = null;
+        // determine primary typeline for the card
+        if(rows[i].type_line.includes("Creature")){
+          main_type = "Creature";
+        }
+        else if(rows[i].type_line.includes("Artifact")){
+          main_type = "Artifact";
+        }
+        else if(rows[i].type_line.includes("Enchantment")){
+          main_type = "Enchantment";
+        }
+        else if(rows[i].type_line.includes("Planeswalker")){
+          main_type = "Planeswalker";
+        }
+        else if(rows[i].type_line.includes("Land")){
+          main_type = "Land";
+        }
+        else if(rows[i].type_line.includes("Instant")){
+          main_type = "Instant";
+        }
+        else if(rows[i].type_line.includes("Sorcery")){
+          main_type = "Sorcery";
+        }
+
+        var cube_card = [rows[i].id, cubeId, rows[i].color, main_type, 1];
         cube_cards.push(cube_card);
       }
     }
@@ -95,7 +119,7 @@ exports.addTxtToCube = function(req, res){
   var findCards = function(list){
     try{
       //if any ids are found pass them to addCards
-      var query = "Select id,cname,color From multiface where cname IN (" + list + ") Union SELECT id,cname,color FROM card where cname IN (" + list + ")";
+      var query = "Select id,cname,color,type_line From multiface where cname IN (" + list + ") Union SELECT id,cname,color,type_line FROM card where cname IN (" + list + ")";
       server.connection.query(query, function(err, rows, fields){
         if(!rows[0]){
           console.log("Could not find any of the cards.");

@@ -2,6 +2,7 @@ CREATE TABLE cube_card (
 	id INT NOT NULL,
     cube_id INT NOT NULL,
     color text,
+    main_type text,
     copies INT, CHECK (copies >= 1),
     FOREIGN KEY (id) REFERENCES card(id),
     FOREIGN KEY (cube_id) REFERENCES mtgcube(cube_id),

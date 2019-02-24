@@ -40,7 +40,8 @@ var saveCardFace = function(face, primary){
     toughness: face.toughness,
     type_line: face.type_line,
     image: null,
-    primary_face: primary
+    primary_face: primary,
+    layout: allCards[currentRow].layout
   };
 
   try{
@@ -87,7 +88,7 @@ var loopThroughRows = function(){
 }
 
 // gets a list of all the multiface cards in the db and initiates the process of looping through them
-connection.query("select id,scryfall from card where cname like \"%//%\"", function(err, rows, fields){
+connection.query("select id,scryfall,layout from card where cname like \"%//%\"", function(err, rows, fields){
   if(err){
     console.log(err);
   }
