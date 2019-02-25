@@ -81,11 +81,11 @@ var determineColors = function(allCards) {
       colorless = [];
 
       allCards.forEach(function(card){
-        var w = card.manacost.includes("{W}"),
-            u = card.manacost.includes("{U}"),
-            b = card.manacost.includes("{B}"),
-            r = card.manacost.includes("{R}"),
-            g = card.manacost.includes("{G}");
+        var w = card.manacost.includes("W"),
+            u = card.manacost.includes("U"),
+            b = card.manacost.includes("B"),
+            r = card.manacost.includes("R"),
+            g = card.manacost.includes("G");
 
         if(w&&u&&b&&r&&g){
           rainbow.push(card.id);

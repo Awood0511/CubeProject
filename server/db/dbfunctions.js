@@ -57,22 +57,20 @@ exports.getCubes = function(req, res) {
 /*------------------------------------------------------------------------------------------*/
 //add cards from a text file to the cube, return any cards that were not added properly
 exports.addTxtToCube = function(req, res){
-  //var cubeId = req.cube_id;
+  var cubeId = req.cube_id;
   var copy_info = [];
-  var cubeId;
-  var cube_info = {
-    player: req.body.player,
-    cube_name: req.body.cubename
-  };
+  var cube_info;
 
-  //create the cube
-  server.connection.query('INSERT INTO mtgcube SET ?', cube_info, function(err, result){
+  //check the current cards in their cube to prevent duplicate insertion
+  var query = "select cube_card.* from cube_card inner join card where card.id = cube_card.id and cube_card.cube_id = " + cubeId;
+  server.connection.query(query, function(err, rows, fields){
     if(err){
       console.log(err);
+      res.status(400).end();
       return;
     }
-    console.log("Created Cube " + cube_info.cube_name);
-    cubeId = result.insertId;
+    cube_info = rows;
+    //start process of reading text upload
     loopThroughTxt();
   }); //end query
 
@@ -96,26 +94,64 @@ exports.addTxtToCube = function(req, res){
 
   var getCopies = function(cname) {
     for(var i = 0; i < copy_info.length; i+=1){
-      if(copy_info[i].cname === cname){
+      if(copy_info[i].cname.toUpperCase() === cname.toUpperCase()){
         return copy_info[i].copies;
       }
     }
   } //end getCopies
 
-  //add all cards to the cube when passed matching name results
+  //updates the copies of cards found in the txt that are already in the db for this cube
+  var updateCards = function(updateList) {
+    console.log("Updating cube " + cubeId + " with:");
+    console.log(updateList);
+    //loop through each card in the list and update its copies count
+    for(var i = 0; i < updateList.length; i+=1){
+      var query = "update cube_card set copies = " + updateList[i].newCopies + " where id = " + updateList[i].id + " and cube_id = " + cubeId;
+      server.connection.query(query, function(err, result){
+        if(err){
+          console.log(err);
+          res.status(400).end();
+          return;
+        }
+      }); //end query
+    }
+
+    //done
+    res.status(200).end();
+    fs.unlinkSync('./uploads/' + req.file.filename); //delete the uploaded txt file
+  } //end updateCards
+
+  //add all cards to the cube that had matching name results
   var addCards = function(rows){
+    console.log(copy_info);
     //build insert array from unique card names found in the previous select statement
     var cube_cards = [];
+    //build update array to add new copies to existing cards in the cube
+    var update_cards = [];
+
     //loop through each result and add it to the array if
     //it is the first instance of that card name in the list
     for(var i = 0; i < rows.length; i+=1){
       var first = true;
+      var newEntry = true;
       //check whether it is the first instance of that card name in the list
       if(i !=0 && rows[i].cname === rows[i-1].cname){
         first = false;
       }
 
+      //check whether it is already in the cube
       if(first){
+        for(var k = 0; k < cube_info.length; k+=1){
+          if(rows[i].id === cube_info[k].id){
+            newEntry = false;
+            var update_card = {id: rows[i].id, newCopies: getCopies(rows[i].cname) + cube_info[k].copies};
+            update_cards.push(update_card);
+            break;
+          }
+        }
+      }
+
+      if(first && newEntry){
         var main_type = null;
         // determine primary typeline for the card
         if(rows[i].type_line.includes("Creature")){
@@ -145,17 +181,19 @@ exports.addTxtToCube = function(req, res){
       }
     }
 
-    server.connection.query('INSERT INTO cube_card VALUES ?', [cube_cards], function(err, result){
-      if(err){
-        console.log(err);
-        res.status(400).end();
-        return;
-      }
+    if(cube_cards.length > 0){
+      server.connection.query('INSERT INTO cube_card VALUES ?', [cube_cards], function(err, result){
+        if(err){
+          console.log(err);
+          res.status(400).end();
+          return;
+        }
 
-      console.log("Added # of cards: " + result.affectedRows);
-      fs.unlinkSync('./uploads/' + req.file.filename); //delete the uploaded txt file
-      res.status(200).end();
-    }); //end query
+        console.log("Added # of cards: " + result.affectedRows);
+      }); //end query
+    }
+    //update the cards that need to be updated
+    updateCards(update_cards);
   } //end addCards
 
   //find all ids associated with the card names in the txt
