@@ -6,7 +6,7 @@ var server = require("../config/express.js"),
 
 //get card and cube_card information
 exports.getCubeCards = function(req, res, next) {
-  query_str = "select c.*, cc.color as cc_color, cc.main_type, cc.copies from Card as c INNER JOIN Cube_card as cc ON c.id = cc.id AND cc.cube_id =" + req.cube_id;
+  var query_str = "select c.*, cc.color as cc_color, cc.main_type, cc.copies from Card as c INNER JOIN Cube_card as cc ON c.id = cc.id AND cc.cube_id =" + req.cube_id;
   server.connection.query(query_str, function(err, rows, fields){
     if(err){
       console.log(err);
@@ -20,7 +20,7 @@ exports.getCubeCards = function(req, res, next) {
 
 //get multiface information for mf cards in the cube
 exports.getCubeMFCards = function(req, res) {
-  query_str = "select mf.* from Card as c INNER JOIN Cube_card as cc ON c.id = cc.id AND cc.cube_id =" + req.cube_id + " INNER JOIN multiface as mf on mf.id = c.id";
+  var query_str = "select mf.* from Card as c INNER JOIN Cube_card as cc ON c.id = cc.id AND cc.cube_id =" + req.cube_id + " INNER JOIN multiface as mf on mf.id = c.id";
   server.connection.query(query_str, function(err, rows, fields){
     if(err){
       console.log(err);
@@ -43,7 +43,7 @@ exports.cubeByID = function(req, res, next, cube_id){
 
 //gets a list of all the mtgcubes in the db
 exports.getCubes = function(req, res) {
-  query_str = "select * from mtgcube";
+  var query_str = "select * from mtgcube";
   server.connection.query(query_str, function(err, rows, fields){
     if(err){
       console.log(err);
@@ -53,6 +53,26 @@ exports.getCubes = function(req, res) {
     }
   }); //end query
 } //end getCubes
+
+/*------------------------------------------------------------------------------------------*/
+
+exports.createCube = function(req, res) {
+  console.log(req.body);
+  var entry = {
+    player: req.body.player,
+    cube_name: req.body.cube_name
+  };
+
+  server.connection.query("Insert into mtgcube set ?", entry, function(err, result){
+    if(err){
+      console.log(err);
+      res.status(400).end();
+      return;
+    }
+    console.log("Created a cube: " + entry[1]);
+    res.status(200).location('/');
+  });
+} // end createCube
 
 /*------------------------------------------------------------------------------------------*/
 //add cards from a text file to the cube, return any cards that were not added properly

@@ -43,7 +43,7 @@ export class AllCubesTable extends React.Component {
                 </thead>
                 <tbody>
                   {this.cubes.map(cube =>
-                    <tr>
+                    <tr key={cube.cube_id}>
                       <td>{cube.cube_name}</td>
                       <td>{cube.player}</td>
                       <td><a href={"/cube/view/" + cube.cube_id}>Link</a></td>

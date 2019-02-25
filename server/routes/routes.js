@@ -10,6 +10,9 @@ var uploads = multer({
 router.route('/cube')
       .get(dbfunctions.getCubes);
 
+router.route('/cube/create')
+  .post(dbfunctions.createCube);
+
 router.route('/cube/:cube_id')
   .get(dbfunctions.getCubeCards, dbfunctions.getCubeMFCards)
   .post(uploads.single('cubetxt'), dbfunctions.addTxtToCube);

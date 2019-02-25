@@ -30,10 +30,10 @@ module.exports.init = function() {
   });
 
   //activate middleware
-  app.use(express.static(path.resolve('./dist')));
   app.use(morgan('dev'));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(express.static(path.resolve('./dist')));
 
   //use router for calls to the api
   app.use('/api/', functionRouter);
