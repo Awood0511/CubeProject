@@ -1,5 +1,4 @@
 import React from "react";
-import $ from "jquery";
 
 export class CubeTable extends React.Component {
   constructor(props) {
@@ -76,8 +75,23 @@ export class CubeTable extends React.Component {
     var showImg = showImgUnbound.bind(this);
     var hideImg = hideImgUnbound.bind(this);
 
-    var colorCnt = this.props.cards.creatures.length + this.props.cards.artifacts.length + this.props.cards.enchantments.length +
-    this.props.cards.planeswalkers.length + this.props.cards.lands.length + this.props.cards.instants.length + this.props.cards.sorceries.length;
+    //count copies for each card of a certain type;
+    var countCards = function(cards) {
+      var total = 0;
+      for(var i = 0; i < cards.length; i+=1){
+        total += cards[i].copies;
+      }
+      return total;
+    }
+
+    var cCnt = countCards(this.props.cards.creatures);
+    var aCnt = countCards(this.props.cards.artifacts);
+    var eCnt = countCards(this.props.cards.enchantments);
+    var pCnt = countCards(this.props.cards.planeswalkers);
+    var lCnt = countCards(this.props.cards.lands);
+    var iCnt = countCards(this.props.cards.instants);
+    var sCnt = countCards(this.props.cards.sorceries);
+    var colorCnt = cCnt + aCnt + eCnt + pCnt + lCnt + iCnt + sCnt;
 
     return (
       <table style={{backgroundColor: this.props.bgcolor}} onMouseMove={this.handleMouseMove.bind(this)}>
@@ -87,73 +101,73 @@ export class CubeTable extends React.Component {
           </tr>
         </thead>
         <tbody>
-          <tr style={{display: (this.props.cards.creatures.length > 0) ? '' : 'none'}}>
-            <td className="special_td" style={{color: this.props.txtcolor}}>Creatures {"(" + this.props.cards.creatures.length + ")"}</td>
+          <tr style={{display: (cCnt > 0) ? '' : 'none'}}>
+            <td className="special_td" style={{color: this.props.txtcolor}}>Creatures {"(" + cCnt + ")"}</td>
           </tr>
           {this.props.cards.creatures.map(function(row) {
             return (
               <tr key={row.id} onMouseEnter={function(){ showImg(row) }} onMouseLeave={function(){ hideImg(row) }} id={row.id + "_row"}>
-                <td id={row.id + "_data"}>{row.cname}</td>
+                <td id={row.id + "_data"}>{(row.copies == 1) ? row.cname : row.cname + " (" + row.copies + ")"}</td>
               </tr>
             );
           }, this)}
-          <tr style={{display: (this.props.cards.artifacts.length > 0) ? '' : 'none'}}>
-            <td className="special_td" style={{color: this.props.txtcolor}}>Artifacts {"(" + this.props.cards.artifacts.length + ")"}</td>
+          <tr style={{display: (aCnt > 0) ? '' : 'none'}}>
+            <td className="special_td" style={{color: this.props.txtcolor}}>Artifacts {"(" + aCnt + ")"}</td>
           </tr>
           {this.props.cards.artifacts.map(function(row) {
             return (
               <tr key={row.id} onMouseEnter={function(){ showImg(row) }} onMouseLeave={function(){ hideImg(row) }} id={row.id + "_row"}>
-                <td id={row.id + "_data"}>{row.cname}</td>
+                <td id={row.id + "_data"}>{(row.copies == 1) ? row.cname : row.cname + " (" + row.copies + ")"}</td>
               </tr>
             );
           }, this)}
-          <tr style={{display: (this.props.cards.enchantments.length > 0) ? '' : 'none'}}>
-            <td className="special_td" style={{color: this.props.txtcolor}}>Enchantments {"(" + this.props.cards.enchantments.length + ")"}</td>
+          <tr style={{display: (eCnt > 0) ? '' : 'none'}}>
+            <td className="special_td" style={{color: this.props.txtcolor}}>Enchantments {"(" + eCnt + ")"}</td>
           </tr>
           {this.props.cards.enchantments.map(function(row) {
             return (
               <tr key={row.id} onMouseEnter={function(){ showImg(row) }} onMouseLeave={function(){ hideImg(row) }} id={row.id + "_row"}>
-                <td id={row.id + "_data"}>{row.cname}</td>
+                <td id={row.id + "_data"}>{(row.copies == 1) ? row.cname : row.cname + " (" + row.copies + ")"}</td>
               </tr>
             );
           }, this)}
-          <tr style={{display: (this.props.cards.planeswalkers.length > 0) ? '' : 'none'}}>
-            <td className="special_td" style={{color: this.props.txtcolor}}>Planeswalkers {"(" + this.props.cards.planeswalkers.length + ")"}</td>
+          <tr style={{display: (pCnt > 0) ? '' : 'none'}}>
+            <td className="special_td" style={{color: this.props.txtcolor}}>Planeswalkers {"(" + pCnt + ")"}</td>
           </tr>
           {this.props.cards.planeswalkers.map(function(row) {
             return (
               <tr key={row.id} onMouseEnter={function(){ showImg(row) }} onMouseLeave={function(){ hideImg(row) }} id={row.id + "_row"}>
-                <td id={row.id + "_data"}>{row.cname}</td>
+                <td id={row.id + "_data"}>{(row.copies == 1) ? row.cname : row.cname + " (" + row.copies + ")"}</td>
               </tr>
             );
           }, this)}
-          <tr style={{display: (this.props.cards.lands.length > 0) ? '' : 'none'}}>
-            <td className="special_td" style={{color: this.props.txtcolor}}>Lands {"(" + this.props.cards.lands.length + ")"}</td>
+          <tr style={{display: (lCnt > 0) ? '' : 'none'}}>
+            <td className="special_td" style={{color: this.props.txtcolor}}>Lands {"(" + lCnt + ")"}</td>
           </tr>
           {this.props.cards.lands.map(function(row) {
             return (
               <tr key={row.id} onMouseEnter={function(){ showImg(row) }} onMouseLeave={function(){ hideImg(row) }} id={row.id + "_row"}>
-                <td id={row.id + "_data"}>{row.cname}</td>
+                <td id={row.id + "_data"}>{(row.copies == 1) ? row.cname : row.cname + " (" + row.copies + ")"}</td>
               </tr>
             );
           }, this)}
-          <tr style={{display: (this.props.cards.instants.length > 0) ? '' : 'none'}}>
-            <td className="special_td" style={{color: this.props.txtcolor}}>Instants {"(" + this.props.cards.instants.length + ")"}</td>
+          <tr style={{display: (iCnt > 0) ? '' : 'none'}}>
+            <td className="special_td" style={{color: this.props.txtcolor}}>Instants {"(" + iCnt + ")"}</td>
           </tr>
           {this.props.cards.instants.map(function(row) {
             return (
               <tr key={row.id} onMouseEnter={function(){ showImg(row) }} onMouseLeave={function(){ hideImg(row) }} id={row.id + "_row"}>
-                <td id={row.id + "_data"}>{row.cname}</td>
+                <td id={row.id + "_data"}>{(row.copies == 1) ? row.cname : row.cname + " (" + row.copies + ")"}</td>
               </tr>
             );
           }, this)}
-          <tr style={{display: (this.props.cards.sorceries.length > 0) ? '' : 'none'}}>
-            <td className="special_td" style={{color: this.props.txtcolor}}>Sorceries {"(" + this.props.cards.sorceries.length + ")"}</td>
+          <tr style={{display: (sCnt > 0) ? '' : 'none'}}>
+            <td className="special_td" style={{color: this.props.txtcolor}}>Sorceries {"(" + sCnt + ")"}</td>
           </tr>
           {this.props.cards.sorceries.map(function(row) {
             return (
               <tr key={row.id} onMouseEnter={function(){ showImg(row) }} onMouseLeave={function(){ hideImg(row) }} id={row.id + "_row"}>
-                <td id={row.id + "_data"}>{row.cname}</td>
+                <td id={row.id + "_data"}>{(row.copies == 1) ? row.cname : row.cname + " (" + row.copies + ")"}</td>
               </tr>
             );
           }, this)}

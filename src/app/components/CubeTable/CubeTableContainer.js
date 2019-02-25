@@ -115,7 +115,8 @@ export class CubeTableContainer extends React.Component {
           var entry = {
             id: card.id,
             cname: card.cname,
-            layout: card.layout
+            layout: card.layout,
+            copies: card.copies
           };
 
           //replace transform card names with only the front side
@@ -128,28 +129,29 @@ export class CubeTableContainer extends React.Component {
           }
 
           //check which color it is
-          if(card.color === "White"){
+          if(card.cc_color === "White"){
             this.determineType(this.whiteCards, entry, card.main_type);
           }
-          else if(card.color === "Blue"){
+          else if(card.cc_color === "Blue"){
             this.determineType(this.blueCards, entry, card.main_type);
           }
-          else if(card.color === "Black"){
+          else if(card.cc_color === "Black"){
             this.determineType(this.blackCards, entry, card.main_type);
           }
-          else if(card.color === "Red"){
+          else if(card.cc_color === "Red"){
             this.determineType(this.redCards, entry, card.main_type);
           }
-          else if(card.color === "Green"){
+          else if(card.cc_color === "Green"){
             this.determineType(this.greenCards, entry, card.main_type);
           }
-          else if(card.color === "Colorless"){
+          else if(card.cc_color === "Colorless"){
             this.determineType(this.colorlessCards, entry, card.main_type);
           }
           else{
             this.determineType(this.otherCards, entry, card.main_type);
           }
         }
+
         this.setState({
           rendered: true
         });
@@ -164,16 +166,18 @@ export class CubeTableContainer extends React.Component {
     if(this.state.rendered){
       return (
         <div className="container-fluid">
+          <div className="row">
+            <div className="imgrow" id={"imageDiv"}>
+              <div className="imgcol">
+                <img id={"cardImage1"} src={""} style={{display:'none'}}/>
+              </div>
+              <div className="imgcol">
+                <img id={"cardImage2"} src={""} style={{display:'none'}}/>
+              </div>
+            </div>
+          </div>
           <div className="row justify-content-sm-center">
             <div className="col-sm-auto">
-              <div className="imgrow" id={"imageDiv"}>
-                <div className="imgcol">
-                  <img id={"cardImage1"} src={""} style={{display:'none'}}/>
-                </div>
-                <div className="imgcol">
-                  <img id={"cardImage2"} src={""} style={{display:'none'}}/>
-                </div>
-              </div>
               <CubeTable cards={this.whiteCards} color={"White"} bgcolor={"#fcffef"} txtcolor={"#000000"}/>
             </div>
             <div className="col-sm-auto">
@@ -200,7 +204,6 @@ export class CubeTableContainer extends React.Component {
     } else {
       return (
         <div>
-          Loading...
         </div>
       );
     }

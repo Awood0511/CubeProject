@@ -33,6 +33,7 @@ exports.getCubeMFCards = function(req, res) {
 
 /*------------------------------------------------------------------------------------------*/
 
+//appends cube id to req.cube_id for any api function with :cube_id parameter
 exports.cubeByID = function(req, res, next, cube_id){
   req.cube_id = cube_id;
   next();
@@ -40,6 +41,7 @@ exports.cubeByID = function(req, res, next, cube_id){
 
 /*------------------------------------------------------------------------------------------*/
 
+//gets a list of all the mtgcubes in the db
 exports.getCubes = function(req, res) {
   query_str = "select * from mtgcube";
   server.connection.query(query_str, function(err, rows, fields){
@@ -55,6 +57,8 @@ exports.getCubes = function(req, res) {
 /*------------------------------------------------------------------------------------------*/
 //add cards from a text file to the cube, return any cards that were not added properly
 exports.addTxtToCube = function(req, res){
+  //var cubeId = req.cube_id;
+  var copy_info = [];
   var cubeId;
   var cube_info = {
     player: req.body.player,
@@ -69,9 +73,34 @@ exports.addTxtToCube = function(req, res){
     }
     console.log("Created Cube " + cube_info.cube_name);
     cubeId = result.insertId;
-    console.log("Calling loopThroughTxt");
     loopThroughTxt();
   }); //end query
+
+  var addToCopyInfo = function(cname) {
+    var matched = false;
+    //check if the card name already has a copy
+    //if so increment it
+    for(var i = 0; i < copy_info.length; i+=1){
+      if(copy_info[i].cname === cname){
+        matched = true;
+        copy_info[i].copies += 1;
+        break;
+      }
+    }
+    //create a copy for that card if it doesnt have one
+    if(!matched){
+      var entry = {cname: cname, copies: 1};
+      copy_info.push(entry);
+    }
+  } //end addToCopyInfo
+
+  var getCopies = function(cname) {
+    for(var i = 0; i < copy_info.length; i+=1){
+      if(copy_info[i].cname === cname){
+        return copy_info[i].copies;
+      }
+    }
+  } //end getCopies
 
   //add all cards to the cube when passed matching name results
   var addCards = function(rows){
@@ -81,14 +110,11 @@ exports.addTxtToCube = function(req, res){
     //it is the first instance of that card name in the list
     for(var i = 0; i < rows.length; i+=1){
       var first = true;
-      var k = i-1;
       //check whether it is the first instance of that card name in the list
-      while(first && k >= 0){
-        if(rows[i].cname === rows[k].cname){
-          first = false;
-        }
-        k -= 1;
+      if(i !=0 && rows[i].cname === rows[i-1].cname){
+        first = false;
       }
+
       if(first){
         var main_type = null;
         // determine primary typeline for the card
@@ -114,7 +140,7 @@ exports.addTxtToCube = function(req, res){
           main_type = "Sorcery";
         }
 
-        var cube_card = [rows[i].id, cubeId, rows[i].color, main_type, 1];
+        var cube_card = [rows[i].id, cubeId, rows[i].color, main_type, getCopies(rows[i].cname)];
         cube_cards.push(cube_card);
       }
     }
@@ -123,7 +149,9 @@ exports.addTxtToCube = function(req, res){
       if(err){
         console.log(err);
         res.status(400).end();
+        return;
       }
+
       console.log("Added # of cards: " + result.affectedRows);
       fs.unlinkSync('./uploads/' + req.file.filename); //delete the uploaded txt file
       res.status(200).end();
@@ -132,31 +160,36 @@ exports.addTxtToCube = function(req, res){
 
   //find all ids associated with the card names in the txt
   var findCards = function(list){
-    try{
-      //if any ids are found pass them to addCards
-      var query = "Select id,cname,color,type_line From multiface where cname IN (" + list + ") Union SELECT id,cname,color,type_line FROM card where cname IN (" + list + ")";
-      server.connection.query(query, function(err, rows, fields){
-        if(!rows[0]){
-          console.log("Could not find any of the cards.");
-          res.status(200).end();
-        } else {
-          addCards(rows);
-        }
-      }); //end query
-    } catch(err) {
-      console.log("An error occured at findCards in addTxtToCube");
-      res.status(400).end();
-    } //end try/catch
+    //if any ids are found pass them to addCards
+    var query = "Select id,cname,color,type_line From multiface where cname IN (" + list + ") Union SELECT id,cname,color,type_line FROM card where cname IN (" + list + ") order by cname asc";
+    server.connection.query(query, function(err, rows, fields){
+      if(err){
+        console.log(err);
+        res.status(400).end();
+        return;
+      }
+      if(!rows[0]){
+        console.log("Could not find any of the cards.");
+        res.status(200).end();
+      } else {
+        addCards(rows);
+      }
+    }); //end query
   } //end findCards
 
   var loopThroughTxt = function(){
     var allCards = fs.readFileSync('./uploads/' + req.file.filename).toString().split("\n");
-    var searchList = "\"" + allCards[0].substring(0, allCards[0].length-1) + "\""; //first string in list of names
+    var trimmedName = allCards[0].substring(0, allCards[0].length-1);
+    addToCopyInfo(trimmedName);
+    var searchList = "\"" + trimmedName + "\""; //first string in list of names
     for(var i = 1; i < allCards.length; i+=1){
       //build IN list of all the card names in the txt file
       //remove carriage return from end of card name
-      var trimmedName = allCards[i].substring(0, allCards[i].length-1);
-      searchList += ", \"" + trimmedName + "\"";
+      trimmedName = allCards[i].substring(0, allCards[i].length-1);
+      if(!trimmedName.includes("\"")){
+        searchList += ", \"" + trimmedName + "\"";
+        addToCopyInfo(trimmedName);
+      }
     }
     findCards(searchList);
   } //end loopThroughTxt
