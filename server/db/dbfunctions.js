@@ -4,17 +4,17 @@ var server = require("../config/express.js"),
 
 /*------------------------------------------------------------------------------------------*/
 
-//get card and cube_card information
+//get card and cube_card information for all cards in a cube
 exports.getCubeCards = function(req, res, next) {
   var query_str = "select c.*, cc.color as cc_color, cc.main_type, cc.copies from Card as c INNER JOIN Cube_card as cc ON c.id = cc.id AND cc.cube_id =" + req.cube_id;
   server.connection.query(query_str, function(err, rows, fields){
     if(err){
       console.log(err);
       res.status(400);
-    } else {
-      req.cube_cards = rows;
-      next();
+      return;
     }
+    req.cube_cards = rows;
+    next();
   }); //end query
 } //end getCubeCards
 
@@ -25,11 +25,31 @@ exports.getCubeMFCards = function(req, res) {
     if(err){
       console.log(err);
       res.status(400);
-    } else {
-      res.json([req.cube_cards, rows]);
+      return;
     }
+    res.json([req.cube_cards, rows]);
   }); //end query
 } //end getCubeMFCards
+
+//gets cards that share a cname with cards in a cube to facilitate swapping sets
+exports.getEditCards = function(req, res, next) {
+  var names = "";
+  if(req.cube_cards.length > 0){
+      names += "\"" + req.cube_cards[0].cname + "\"";
+  }
+  for(var i = 1; i < req.cube_cards.length; i+=1){
+    names += ", \"" + req.cube_cards[i].cname + "\"";
+  }
+  var query = "Select * from card where cname in (" + names + ")";
+  server.connection.query(query, function(err, rows, fields){
+    if(err){
+      console.log(err);
+      res.status(400).end();
+      return;
+    }
+    res.json([req.cube_cards, rows]);
+  });
+} //end getCubeCards
 
 /*------------------------------------------------------------------------------------------*/
 
@@ -56,6 +76,7 @@ exports.getCubes = function(req, res) {
 
 /*------------------------------------------------------------------------------------------*/
 
+//create a cube given a player and a cube name
 exports.createCube = function(req, res) {
   console.log(req.body);
   var entry = {
@@ -73,6 +94,28 @@ exports.createCube = function(req, res) {
     res.status(200).location('/');
   });
 } // end createCube
+
+/*------------------------------------------------------------------------------------------*/
+
+exports.updateCube = function(req, res) {
+  var cube_id = req.cube_id,
+      changeType = req.body.changeType,
+      idToChange = req.body.idToChange,
+      changeVal = req.body.changeVal;
+
+  //changing set by swapping ids
+  if(changeType === "id"){
+    var query = "update cube_card set " + changeType + " = " + changeVal + " where cube_id = " + cube_id + " and id = " + idToChange;
+    server.connection.query(query, function(err, result){
+      if(err){
+        console.log(err);
+        res.status(400).end();
+        return;
+      }
+      res.status(200).end();
+    });
+  }
+} //end updateCube
 
 /*------------------------------------------------------------------------------------------*/
 //add cards from a text file to the cube, return any cards that were not added properly

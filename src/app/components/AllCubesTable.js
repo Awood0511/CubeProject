@@ -39,6 +39,7 @@ export class AllCubesTable extends React.Component {
                     <th>Owner</th>
                     <th>Card List</th>
                     <th>Visual Spoiler</th>
+                    <th>Edit</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -46,8 +47,9 @@ export class AllCubesTable extends React.Component {
                     <tr key={cube.cube_id}>
                       <td>{cube.cube_name}</td>
                       <td>{cube.player}</td>
-                      <td><a href={"/cube/view/" + cube.cube_id}>Link</a></td>
-                      <td><a href={"/cube/visual/" + cube.cube_id}>Link</a></td>
+                      <td><a href={"/cube/view/" + cube.cube_id}>View</a></td>
+                      <td><a href={"/cube/visual/" + cube.cube_id}>Visual</a></td>
+                      <td><a href={"/cube/edit/" + cube.cube_id}>Edit</a></td>
                     </tr>
                   )}
                 </tbody>

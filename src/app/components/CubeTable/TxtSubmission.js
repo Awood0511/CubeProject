@@ -18,7 +18,6 @@ export class TxtSubmission extends React.Component {
   handlePost(e) {
     const fd = new FormData();
     fd.append('cubetxt', this.state.file, this.state.file.name);
-    const config = { headers: { 'Content-Type': 'multipart/form-data' } };
 
     axios.post('/api/cube/' + this.props.cube_id, fd).then(
       response => {
@@ -36,6 +35,8 @@ export class TxtSubmission extends React.Component {
         <div className="col">
           Upload a text file:
           <input type="file" name="cubetxt" onChange={this.fileChange.bind(this)}></input>
+        </div>
+        <div className="col">
           <button onClick={this.handlePost.bind(this)}>Upload</button>
         </div>
       </div>

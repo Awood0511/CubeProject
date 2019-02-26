@@ -47,6 +47,10 @@ module.exports.init = function() {
   app.get('/cube/view/:cube_id', function(req, res){
     res.sendFile(path.join(__dirname + '../../../dist/htmls/cube_view.html'));
   });
+  //get a cube to edit
+  app.get('/cube/edit/:cube_id', function(req, res){
+    res.sendFile(path.join(__dirname + '../../../dist/htmls/cube_edit.html'));
+  });
   //get a cube visual spoiler
   app.get('/cube/visual/:cube_id', function(req, res){
     res.sendFile(path.join(__dirname + '../../../dist/htmls/cube_visual_spoiler.html'));
