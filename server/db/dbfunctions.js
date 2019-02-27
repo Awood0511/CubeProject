@@ -115,6 +115,17 @@ exports.updateCube = function(req, res) {
       res.status(200).end();
     });
   }
+  else if(changeType === "color" || changeType === "main_type"){
+    var query = "update cube_card set " + changeType + " = \"" + changeVal + "\" where cube_id = " + cube_id + " and id = " + idToChange;
+    server.connection.query(query, function(err, result){
+      if(err){
+        console.log(err);
+        res.status(400).end();
+        return;
+      }
+      res.status(200).end();
+    });
+  }
 } //end updateCube
 
 /*------------------------------------------------------------------------------------------*/

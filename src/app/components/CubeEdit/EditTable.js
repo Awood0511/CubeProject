@@ -29,12 +29,15 @@ export class EditTable extends React.Component {
           <tr>
             <th>Name</th>
             <th>Set</th>
+            <th>Color</th>
+            <th>Type</th>
+            <th>Number</th>
           </tr>
         </thead>
         <tbody>
           {this.props.cubeCards.map(function(card){
             return(
-              <EditRow card={{cname: card.cname, set: card.set_code, id: card.id}} sets={this.getAllSets(card.cname)} cube_id={this.props.cube_id} key={card.id}/>
+              <EditRow card={card} sets={this.getAllSets(card.cname)} cube_id={this.props.cube_id} key={card.id}/>
             );
           }, this)}
         </tbody>
