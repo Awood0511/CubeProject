@@ -12,12 +12,16 @@ export class CubeTable extends React.Component {
     //variables to hold the mouses location
     this.x = 0;
     this.y = 0;
+    this.windowX = 0;
+    this.windowY = 0;
   }
 
   //updates mouse position. Also updates image position, but only if hovering
   handleMouseMove(e) {
-    this.x = e.screenX;
-    this.y = e.screenY;
+    this.x = e.clientX;
+    this.y = e.clientY;
+    this.windowX = window.innerWidth;
+    this.windowY = window.innerHeight;
 
     if(this.state.hovering){
       //get relevant dom element data
@@ -33,9 +37,25 @@ export class CubeTable extends React.Component {
         image2.src = '/../images/card_images/' + this.state.hoverID + '_2.jpg';
       }
 
-      div.style.top = (this.y - 100) + "px";
-      div.style.left = (this.x + 15) + "px";
+      //decide where to render the image X pos
+      if((this.windowX - this.x) > (this.state.transform ? 519 : 267)){
+        //render to the right
+        div.style.left = (this.x + 15) + "px";
+      }
+      else{
+        //render to the left
+        div.style.left = (this.x - 15 - (this.state.transform ? 519 : 267)) + "px";
+      }
 
+      //decide where to render the image Y pos
+      if((this.windowY - this.y) > 367){
+        //render below
+        div.style.top = (this.y + 15) + "px";
+      }
+      else{
+        //render above
+        div.style.top = (this.y - 15 - 367) + "px";
+      }  
     }
   } //end handleMouseMove
 
@@ -94,7 +114,7 @@ export class CubeTable extends React.Component {
     var colorCnt = cCnt + aCnt + eCnt + pCnt + lCnt + iCnt + sCnt;
 
     return (
-      <table style={{backgroundColor: this.props.bgcolor}} onMouseMove={this.handleMouseMove.bind(this)}>
+      <table style={{backgroundColor: this.props.bgcolor}} onMouseMove={this.handleMouseMove.bind(this)} id={this.props.color + "-table"}>
         <thead>
           <tr>
             <th style={{color: this.props.txtcolor}}>{this.props.color + " (" + colorCnt + ")"}</th>
