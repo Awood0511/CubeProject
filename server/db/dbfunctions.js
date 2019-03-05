@@ -104,7 +104,7 @@ exports.updateCube = function(req, res) {
       changeVal = req.body.changeVal;
 
   //changing set by swapping ids
-  if(changeType === "id"){
+  if(changeType === "id" || changeType === "copies"){
     var query = "update cube_card set " + changeType + " = " + changeVal + " where cube_id = " + cube_id + " and id = " + idToChange;
     server.connection.query(query, function(err, result){
       if(err){
@@ -117,6 +117,17 @@ exports.updateCube = function(req, res) {
   }
   else if(changeType === "color" || changeType === "main_type"){
     var query = "update cube_card set " + changeType + " = \"" + changeVal + "\" where cube_id = " + cube_id + " and id = " + idToChange;
+    server.connection.query(query, function(err, result){
+      if(err){
+        console.log(err);
+        res.status(400).end();
+        return;
+      }
+      res.status(200).end();
+    });
+  }
+  else if(changeType === "delete"){
+    var query = "delete from cube_card where cube_id = " + cube_id + " and id = " + idToChange;
     server.connection.query(query, function(err, result){
       if(err){
         console.log(err);

@@ -7,11 +7,13 @@ export class EditRow extends React.Component {
     this.state = {
       setValue: this.props.card.id,
       color: this.props.card.cc_color,
-      type: this.props.card.main_type
+      type: this.props.card.main_type,
+      copies: this.props.card.copies
     }
     this.onSetChange = this.onSetChange.bind(this);
     this.onColorChange = this.onColorChange.bind(this);
     this.onTypeChange = this.onTypeChange.bind(this);
+    this.onCopiesChange = this.onCopiesChange.bind(this);
     this.updateCube = this.updateCube.bind(this);
   }
 
@@ -43,6 +45,29 @@ export class EditRow extends React.Component {
     }
   }
 
+  onCopiesChange(e) {
+    var num = this.state.copies;
+    console.log(e.target);
+    if(e.target.name == "add_btn"){
+      num += 1;
+    } else {
+      num -= 1;
+    }
+
+    if(num <= 0){
+      this.setState({
+        copies: num
+      });
+      this.updateCube("delete", this.state.setValue, num);
+    }
+    else if(this.state.copies != num){
+      this.setState({
+        copies: num
+      });
+      this.updateCube("copies", this.state.setValue, num);
+    }
+  }
+
   updateCube(changeType, idToChange, changeVal) {
     axios.post('/api/cube/edit/' + this.props.cube_id, {
       changeType: changeType,
@@ -50,7 +75,7 @@ export class EditRow extends React.Component {
       changeVal: changeVal
     }).then(
       response => {
-        console.log("Changed made successfully.");
+        console.log("Changes made successfully.");
       },
       error => {
         console.log(error);
@@ -67,7 +92,7 @@ export class EditRow extends React.Component {
     var types = ["Creature", "Artifact", "Enchantment", "Planeswalker", "Land", "Instant", "Sorcery"];
 
     return(
-      <tr>
+      <tr style={{backgroundColor : this.props.bgColor, display: (this.state.copies > 0) ? '' : 'none'}}>
         <td>{this.props.card.cname}</td>
         <td>
           <select value={this.state.setValue} onChange={this.onSetChange}>
@@ -102,7 +127,9 @@ export class EditRow extends React.Component {
             }, this)}
           </select>
         </td>
-        <td>{this.props.card.copies}</td>
+        <button name="add_btn" className="btn btn-small" style={{backgroundColor: "green"}} onClick={this.onCopiesChange}>+</button>
+        <td>{this.state.copies}</td>
+        <button name="sub_btn" className="btn btn-small" style={{backgroundColor: "red"}} onClick={this.onCopiesChange}>-</button>
       </tr>
     );
   }

@@ -29,9 +29,9 @@ connection.connect(function(error){
 });
 
 // save the info of the passed in card face
-var saveCardFace = function(face, primary){
+var saveCardFace = function(face, primary, card){
   var faceInfo = {
-    id: allCards[currentRow].id,
+    id: card.id,
     manacost: face.mana_cost,
     cname: face.name,
     oracle_text: face.oracle_text,
@@ -41,7 +41,7 @@ var saveCardFace = function(face, primary){
     type_line: face.type_line,
     image: null,
     primary_face: primary,
-    layout: allCards[currentRow].layout
+    layout: card.layout
   };
 
   try{
@@ -56,7 +56,7 @@ var saveCardFace = function(face, primary){
         try{
           faceInfo.image = face.image_uris.border_crop;
         } catch(err) {
-          console.log("No image for: " + allCards[currentRow].id);
+          //no image
         }
       }
     }
@@ -74,16 +74,19 @@ var saveCardFace = function(face, primary){
 
 // get the face information for each card
 var loopThroughRows = function(){
-  request(allCards[currentRow].scryfall, {json: true}, function(error, res, body) {
+  var card = allCards[currentRow];
+
+  //clear interval if out of cards
+  currentRow++;
+  if(currentRow >= len){
+    clearInterval(timer);
+    console.log("Done");
+  }
+
+  request(card.scryfall, {json: true}, function(error, res, body) {
     // Save the info for both faces in the Multiface table
-    saveCardFace(body.card_faces[0], 1);
-    saveCardFace(body.card_faces[1], 0);
-    currentRow++;
-    //clear interval if out of cards
-    if(currentRow >= len){
-      clearInterval(timer);
-      console.log("Done");
-    }
+    saveCardFace(body.card_faces[0], 1, card);
+    saveCardFace(body.card_faces[1], 0, card);
   });
 }
 

@@ -1,0 +1,27 @@
+/* styling for box that contains pop-in images */
+.imgrow {
+  display: flex;
+  z-index: 1;
+  position: fixed;
+}
+
+.imgcol {
+  flex: 50%;
+  padding-right: 252px;
+}
+
+/* Mtg card dimensions w x h => 63x88 */
+img {
+  width: 252px;
+  height: 352px;
+  position: absolute;
+}
+
+tr {
+  font-size: 12pt;
+}
+
+tr.HeaderRow {
+  text-align: center;
+  font-size: 14pt;
+}

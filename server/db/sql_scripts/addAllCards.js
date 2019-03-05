@@ -48,56 +48,64 @@ connection.connect(function(error){
 
 //inserts a card into the card table given a json object of a card from scryfall
 //cardInfo must match the database table structure in mySQL
-var insertCard = function(card){
-  var cardInfo = {
-    cmc: card.cmc,
-    manacost: card.mana_cost,
-    color: null,
-    cname: card.name,
-    oracle_text: card.oracle_text,
-    flavor_text: card.flavor_text,
-    power: card.power,
-    toughness: card.toughness,
-    type_line: card.type_line,
-    image: null,
-    price: card.prices.usd,
-    rarity: card.rarity,
-    set_code: card.set,
-    set_name: card.set_name,
-    layout: card.layout,
-    artist: card.artist,
-    scryfall: card.uri,
-    rulings: card.rulings_uri
-  };
+var insertCards = function(cards){
+  var cardsInfo = [];
 
-  try{
-    cardInfo.image = card.image_uris.large;
-  } catch(err) {
-    console.log("No large for this card, trying another.");
+  cards.forEach(function(card){
+    var cardInfo = [
+      card.cmc,
+      card.mana_cost,
+      null,
+      card.name,
+      card.oracle_text,
+      card.flavor_text,
+      card.power,
+      card.toughness,
+      card.type_line,
+      null,
+      card.prices.usd,
+      card.rarity,
+      card.set,
+      card.set_name,
+      card.layout,
+      card.artist,
+      card.uri,
+      card.rulings_uri
+    ];
+
     try{
-      cardInfo.image = card.image_uris.normal;
+      cardInfo[9] = card.image_uris.large;
     } catch(err) {
-      console.log("No normal for this card, trying another.");
+      console.log("No large for this card, trying another.");
       try{
-        cardInfo.image = card.image_uris.small;
+        cardInfo[9] = card.image_uris.normal;
       } catch(err) {
-        console.log("No small for this card, trying another.");
+        console.log("No normal for this card, trying another.");
         try{
-          cardInfo.image = card.image_uris.border_crop;
+          cardInfo[9] = card.image_uris.small;
         } catch(err) {
-          console.log("Out of options.");
+          console.log("No small for this card, trying another.");
+          try{
+            cardInfo[9] = card.image_uris.border_crop;
+          } catch(err) {
+            console.log("Out of options.");
+          }
         }
       }
     }
-  }
+
+    //dont add basics to card table
+    if(card.name != "Plains" && card.name != "Island" && card.name != "Swamp" && card.name != "Mountain" && card.name != "Forest"){
+      cardsInfo.push(cardInfo);
+    }
+  });
 
   //insert card into the table with above info pulled from scryfall card object
-  var query = connection.query('INSERT INTO Card SET ?', cardInfo, function(err, result){
+  var query = connection.query('INSERT INTO Card (cmc,manacost,color,cname,oracle_text,flavor_text,power,toughness,type_line,image,price,rarity,set_code,set_name,layout,artist,scryfall,rulings) VALUES ?', [cardsInfo], function(err, result){
     if(err){
       console.log(err);
       return;
     }
-    console.log("Inserted: " + cardInfo.cname + ", " + cardInfo.set_code);
   }); //end query
 }; //end insertCard
 
@@ -108,7 +116,7 @@ var getSet = function(set){
 
   //query scryfall api for the current set
   var getSetPage = function(url){
-    console.log("requesting: " + dest);
+    console.log("requesting: " + set);
     request(url, { json: true }, (err, res, body) => {
       if (err) {
         //log the error
@@ -116,9 +124,7 @@ var getSet = function(set){
       } else {
         //loop through the data array and add the cards to the card table
         var json_arr = body.data;
-        json_arr.forEach(function(card) {
-          insertCard(card);
-        }); //forEach end
+        insertCards(json_arr);
         //call getSetPage on the next page of the set
         if(body.has_more){
           getSetPage(body.next_page);
@@ -143,4 +149,4 @@ var getAllSets = function(){
 }
 
 //set an interval to call getAllSets
-var timer = setInterval(getAllSets, 10000);
+var timer = setInterval(getAllSets, 5000);
