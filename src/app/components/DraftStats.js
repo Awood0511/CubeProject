@@ -6,7 +6,9 @@ export class DraftStats extends React.Component {
   constructor() {
     super();
     this.state = {
-      rendered: false
+      rendered: false,
+      sort_method: "priority",
+      asc: true
     };
 
     //get cube_id
@@ -15,6 +17,10 @@ export class DraftStats extends React.Component {
 
     //bind functions
     this.getDraftPriority = this.getDraftPriority.bind(this);
+    this.sortByElement = this.sortByElement.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.highlight = this.highlight.bind(this);
+    this.unhighlight = this.unhighlight.bind(this);
 
     //cube card information
     this.cubeCards;
@@ -73,12 +79,79 @@ export class DraftStats extends React.Component {
         entry.priority = total/count + (7.5-(total/count))/count;
         entry.non_normalized = total/count;
         entry.count = count;
-        this.cardsWithStats.push(entry);
       }
+      this.cardsWithStats.push(entry);
     }
+    this.sortByElement("priority", true);
+  }
+
+  //sort by a certain element and direction pairing
+  sortByElement(element, dir) {
+    if(element === "priority"){
+      this.cardsWithStats.sort(function(a,b){
+        if(dir === true)
+          return a.priority - b.priority;
+        else
+          return b.priority - a.priority;
+      });
+    }
+    else if(element === "count"){
+      this.cardsWithStats.sort(function(a,b){
+        if(dir === true)
+          return a.count - b.count;
+        else
+          return b.count - a.count;
+      });
+    }
+    else if(element === "name"){
+      this.cardsWithStats.sort(function(a,b){
+        if(dir === true)
+          return ('' + a.card.cname).localeCompare(b.card.cname);
+        else
+          return ('' + b.card.cname).localeCompare(a.card.cname);
+      });
+    }
+    else if(element === "nn"){
+      this.cardsWithStats.sort(function(a,b){
+        if(dir === true)
+          return a.non_normalized - b.non_normalized;
+        else
+          return b.non_normalized - a.non_normalized;
+      });
+    }
+    else if(element === "color"){
+      this.cardsWithStats.sort(function(a,b){
+        if(dir === true)
+          return ('' + a.card.cc_color).localeCompare(b.card.cc_color);
+        else
+          return ('' + b.card.cc_color).localeCompare(a.card.cc_color);
+      });
+    }
+
     this.setState({
-      rendered: true
+      rendered: true,
+      sort_method: element,
+      asc: dir
     });
+  }
+
+  //determine what to sort and in what direction
+  handleClick(e) {
+    var element = e.target.getAttribute('name');
+    if(element === this.state.sort_method){
+      this.sortByElement(element, !this.state.asc);
+    }
+    else{
+      this.sortByElement(element, true);
+    }
+  }
+
+  highlight(e) {
+    e.target.style.color = "red";
+  }
+
+  unhighlight(e) {
+    e.target.style.color = "black";
   }
 
   render() {
@@ -94,22 +167,22 @@ export class DraftStats extends React.Component {
     else{
       return (
         <div className="container-fluid">
-          <div className="row">
-            <div className="col">
-              <table className="table table-striped table-hover">
+          <div className="row justify-content-md-center">
+            <div className="col col-md-10 col-md-offset-1">
+              <table className="table table-hover">
                 <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Color</th>
-                    <th>Priority</th>
-                    <th>Non-Normalized</th>
-                    <th># Drafted</th>
+                  <tr class="header_row">
+                    <th onClick={this.handleClick} onMouseEnter={this.highlight} onMouseLeave={this.unhighlight} name="name">Name</th>
+                    <th onClick={this.handleClick} onMouseEnter={this.highlight} onMouseLeave={this.unhighlight} name="color">Color</th>
+                    <th onClick={this.handleClick} onMouseEnter={this.highlight} onMouseLeave={this.unhighlight} name="priority">Priority</th>
+                    <th onClick={this.handleClick} onMouseEnter={this.highlight} onMouseLeave={this.unhighlight} name="nn">Non-Normalized</th>
+                    <th onClick={this.handleClick} onMouseEnter={this.highlight} onMouseLeave={this.unhighlight} name="count"># Drafted</th>
                   </tr>
                 </thead>
                 <tbody>
                   {this.cardsWithStats.map(function(stat, i){
                     return (
-                      <tr key={i}>
+                      <tr key={i} class={"tr_" + stat.card.cc_color}>
                         <td>{stat.card.cname}</td>
                         <td>{stat.card.cc_color}</td>
                         <td>{stat.priority}</td>

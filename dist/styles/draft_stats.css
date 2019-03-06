@@ -1,0 +1,34 @@
+tr {
+  background-color: #eddd53;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+tr.header_row {
+  background-color: white;
+  font-size: 18px;
+}
+
+tr.tr_White {
+  background-color: #fcffef;
+}
+
+tr.tr_Blue {
+  background-color: #5b9aff;
+}
+
+tr.tr_Black {
+  background-color: #686868;
+}
+
+tr.tr_Red {
+  background-color: #ed3d3d;
+}
+
+tr.tr_Green {
+  background-color: #3bb53b;
+}
+
+tr.tr_Colorless {
+  background-color: #e0e1e0;
+}
