@@ -64,6 +64,10 @@ module.exports.init = function() {
   app.get('/draft/view/:draft_id', function(req, res){
     res.sendFile(path.join(__dirname + '../../../dist/htmls/draft_view.html'));
   });
+  //view stats for cube that AI use to draft with
+  app.get('/draft/stats/:cube_id', function(req, res){
+    res.sendFile(path.join(__dirname + '../../../dist/htmls/draft_stats.html'));
+  });
 
   //send site image (temporarily George Costanza)
   app.get('/favicon.ico', function(req,res){
