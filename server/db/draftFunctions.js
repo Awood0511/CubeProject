@@ -15,25 +15,44 @@ exports.getDraftStats = function(req, res){
   });
 }
 
+exports.createDraft = function(){
+  var draft = {
+    cube_id: req.cube_id,
+    player: req.body.player,
+    draft_time: req.body.draft_time
+  }
+
+  server.connection.query("Insert into draft SET ?", draft, function(error, result){
+    if(error){
+      console.log(error);
+      res.status(400).end();
+      return;
+    }
+    res.send(result.insertId);
+  });
+}
+
 //save a pick from a draft of a cube
 exports.saveDraft = function(req, res){
-  console.log("Draft request received");
-  var entry = {
+  var pick = {
+    draft_id: req.draft_id,
     id: req.body.id,
-    cube_id: req.cube_id,
-    player: "Adam",
     pack: req.body.pack,
-    pick: req.body.pick,
-    draft_time: req.body.draft_time
+    pick: req.body.pick
   };
 
   var query = "Insert into draft_picks SET ?";
-  server.connection.query(query, entry, function(error, result){
+  server.connection.query(query, pick, function(error, result){
     if(error){
       console.log(error);
-      res.status(404).end();
+      res.status(400).end();
       return;
     }
-    res.send("Done");
+    res.send("Saved a pick");
   });
+}
+
+exports.draftByID = function(req, res, next, draft_id){
+  req.draft_id = draft_id;
+  next();
 }

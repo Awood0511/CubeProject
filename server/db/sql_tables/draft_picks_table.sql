@@ -1,11 +1,9 @@
 CREATE TABLE draft_picks (
+	draft_id INT,
 	id INT,
-	cube_id INT,
-	player VARCHAR(255),
 	pack INT,
 	pick INT,
-	draft_time DATETIME,
-	PRIMARY KEY (cube_id, player, pack, pick, draft_time),
+	PRIMARY KEY (draft_id, pack, pick),
 	FOREIGN KEY (id) REFERENCES Card(id),
-	FOREIGN KEY (cube_id) REFERENCES mtgcube(cube_id)
+    FOREIGN KEY (draft_id) REFERENCES Draft(draft_id)
 );

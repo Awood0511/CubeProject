@@ -24,11 +24,16 @@ router.route('/cube/:cube_id')
   .post(uploads.single('cubetxt'), dbfunctions.addTxtToCube);
 
 //calls to /api/draft
+router.route('/draft/pick/:draft_id')
+  //.get() will get all picks of a particular draft
+  .post(draftFunctions.saveDraft);
+
 router.route('/draft/:cube_id')
   .get(draftFunctions.getDraftStats)
-  .post(draftFunctions.saveDraft);
+  .post(draftFunctions.createDraft);
 
 //parameter middleware
 router.param('cube_id', dbfunctions.cubeByID);
+router.param('draft_id', draftFunctions.draftByID);
 
 module.exports = router;
