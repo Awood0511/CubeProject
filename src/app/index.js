@@ -1,4 +1,4 @@
-import {CardTable} from "./components/CardTable/CardTable";
+import {VisualSpoiler} from "./components/VisualSpoiler";
 import {CubeTable} from "./components/CubeTable/CubeTableContainer";
 import {SoloDraft} from "./components/SoloDraft/SoloDraft";
 import {CubeEditContainer} from "./components/CubeEdit/CubeEditContainer";
