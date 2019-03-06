@@ -57,8 +57,12 @@ module.exports.init = function() {
   });
 
   //draft a cube by yourself with AI to fill in other players
-  app.get('/draft/solo/:cube_id', function(req, res){
+  app.get('/draft/solo/:draft_id', function(req, res){
     res.sendFile(path.join(__dirname + '../../../dist/htmls/solo_draft.html'));
+  });
+  //view previously drafted cubes
+  app.get('/draft/view/:draft_id', function(req, res){
+    res.sendFile(path.join(__dirname + '../../../dist/htmls/draft_view.html'));
   });
 
   //send site image (temporarily George Costanza)

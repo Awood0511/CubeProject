@@ -52,6 +52,31 @@ exports.saveDraft = function(req, res){
   });
 }
 
+exports.getCardsFromDraft = function(req, res){
+  var draft_id = req.draft_id;
+  var query = "Select card.*, dp.pack, dp.pick from card inner join draft_picks as dp where dp.id = card.id and dp.draft_id = " + draft_id;
+  server.connection.query(query, function(error, rows, fields){
+    if(error){
+      console.log(error);
+      res.status(400).end();
+      return;
+    }
+    res.json(rows);
+  });
+}
+
+exports.getAllDrafts = function(req, res){
+  var query = "select * from draft";
+  server.connection.query(query, function(error, rows, fields){
+    if(error){
+      console.log(error);
+      res.status(400).end();
+      return;
+    }
+    res.json(rows);
+  });
+}
+
 exports.draftByID = function(req, res, next, draft_id){
   req.draft_id = draft_id;
   next();

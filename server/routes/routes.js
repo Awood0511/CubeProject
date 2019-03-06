@@ -10,7 +10,7 @@ var uploads = multer({
 
 //calls to /api/cube
 router.route('/cube')
-      .get(dbfunctions.getCubes);
+  .get(dbfunctions.getCubes);
 
 router.route('/cube/create')
   .post(dbfunctions.createCube);
@@ -24,8 +24,11 @@ router.route('/cube/:cube_id')
   .post(uploads.single('cubetxt'), dbfunctions.addTxtToCube);
 
 //calls to /api/draft
+router.route('/draft')
+  .get(draftFunctions.getAllDrafts);
+
 router.route('/draft/pick/:draft_id')
-  //.get() will get all picks of a particular draft
+  .get(draftFunctions.getCardsFromDraft)
   .post(draftFunctions.saveDraft);
 
 router.route('/draft/:cube_id')
