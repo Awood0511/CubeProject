@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import {render} from "react-dom";
-import {DraftTable} from "./DraftTable";
+import {CardTable} from "../CardTable/CardTable";
 
 export class SoloDraft extends React.Component {
   constructor() {
@@ -138,7 +138,7 @@ export class SoloDraft extends React.Component {
         }
       }
       if(count > 0){
-        entry.priority = total/count;
+        entry.priority = total/count + (7.5-(total/count))/count;
       }
       this.packs[Math.floor(i/15)].push(entry);
     }
@@ -169,7 +169,7 @@ export class SoloDraft extends React.Component {
       }
       //splice out highest priority card and add it to the ai's picks
       this.packs[pack_i].splice(indexOfBest,1);
-      this.picks[i].push(best);
+      this.picks[i].push(best.card);
     }
 
     var newPick = this.state.pick+1;
@@ -189,11 +189,12 @@ export class SoloDraft extends React.Component {
   //removes the card that the player picked from the pack
   //calls log_player_pick to save it to the db
   //call ai_pick to generate the ai's decisions
-  player_pick(draftCard, pack_i, i) {
+  player_pick(pack_i, i) {
     //splice out the index
+    var choice = this.packs[pack_i][i];
     this.packs[pack_i].splice(i,1);
-    this.picks[0].push(draftCard);
-    this.log_player_pick(draftCard);
+    this.picks[0].push(choice.card);
+    //this.log_player_pick(choice);
     this.ai_pick();
   }
 
@@ -227,14 +228,22 @@ export class SoloDraft extends React.Component {
     if(this.state.pack >= 4){
       return (
         <div className="container">
-          <DraftTable pickNum={(this.state.pick-1) + (this.state.pack-1)*15} picks={this.picks[0]} name={"Player"}/>
-          <DraftTable pickNum={(this.state.pick-1) + (this.state.pack-1)*15} picks={this.picks[1]} name={"AI1"}/>
-          <DraftTable pickNum={(this.state.pick-1) + (this.state.pack-1)*15} picks={this.picks[2]} name={"AI2"}/>
-          <DraftTable pickNum={(this.state.pick-1) + (this.state.pack-1)*15} picks={this.picks[3]} name={"AI3"}/>
-          <DraftTable pickNum={(this.state.pick-1) + (this.state.pack-1)*15} picks={this.picks[4]} name={"AI4"}/>
-          <DraftTable pickNum={(this.state.pick-1) + (this.state.pack-1)*15} picks={this.picks[5]} name={"AI5"}/>
-          <DraftTable pickNum={(this.state.pick-1) + (this.state.pack-1)*15} picks={this.picks[6]} name={"AI6"}/>
-          <DraftTable pickNum={(this.state.pick-1) + (this.state.pack-1)*15} picks={this.picks[7]} name={"AI7"}/>
+          <h3 style={{textAlign: "center"}}>Player</h3>
+          <CardTable cards={this.picks[0]}/>
+          <h3 style={{textAlign: "center"}}>AI 1</h3>
+          <CardTable cards={this.picks[1]}/>
+          <h3 style={{textAlign: "center"}}>AI 2</h3>
+          <CardTable cards={this.picks[2]}/>
+          <h3 style={{textAlign: "center"}}>AI 3</h3>
+          <CardTable cards={this.picks[3]}/>
+          <h3 style={{textAlign: "center"}}>AI 4</h3>
+          <CardTable cards={this.picks[4]}/>
+          <h3 style={{textAlign: "center"}}>AI 5</h3>
+          <CardTable cards={this.picks[5]}/>
+          <h3 style={{textAlign: "center"}}>AI 6</h3>
+          <CardTable cards={this.picks[6]}/>
+          <h3 style={{textAlign: "center"}}>AI 7</h3>
+          <CardTable cards={this.picks[7]}/>
         </div>
       );
     }
@@ -261,19 +270,22 @@ export class SoloDraft extends React.Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.packs[pack_i].map(function(draftCard, i) {
-                    return (
-                      <tr key={draftCard.card.id} id={draftCard.card.id + "_row"}>
-                        <td><img className="img-fluid" src={"/../images/card_images/" + draftCard.card.id + ".jpg"}></img></td>
-                        <td className="buttonCol"><button className="btn btn-small" onClick={function(){ player_pick(draftCard, pack_i, i) }}>Pick</button></td>
-                      </tr>
-                    );
-                  }, this)}
+                  <tr>
+                    {this.packs[pack_i].map(function(draftCard, i) {
+                      return (
+                          <td key={draftCard.card.id}>
+                            <img className="img-fluid" src={"/../images/card_images/" + draftCard.card.id + ".jpg"}
+                            onClick={function(){ player_pick(pack_i, i) }}></img>
+                          </td>
+                      );
+                    }, this)}
+                  </tr>
                 </tbody>
               </table>
             </div>
           </div>
-          <DraftTable pickNum={(this.state.pick-1) + (this.state.pack-1)*15} picks={this.picks[0]} name={"Player"}/>
+          <h3 style={{textAlign: "center"}}>Player</h3>
+          <CardTable cards={this.picks[0].slice()}/>
         </div>
       );
     }

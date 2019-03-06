@@ -5,13 +5,44 @@ export class CardTable extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      rendered: false
+      rendered: false,
+      update: false
     };
     this.cardRows = [];
+    this.setRows = this.setRows.bind(this);
+  }
+
+  //check whennew props are passed in
+  static getDerivedStateFromProps(nextProps, prevState){
+    if(nextProps.cards !== prevState.cards){
+      return { cards: nextProps.cards};
+    }
+    else{
+      return null;
+    }
+  }
+
+  //update state after props change
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps.cards !== this.props.cards){
+      //Perform some operation here
+      this.setRows();
+      this.setState({
+        update: !this.state.update
+      });
+    }
   }
 
   componentDidMount() {
+    this.setRows();
+    this.setState({
+      rendered: true
+    });
+  }
+
+  setRows() {
     let cards = this.props.cards;
+    let rows = [];
     for(let i = 0; i < cards.length; i=i+5){
       let row = {
         id1: 0,
@@ -36,11 +67,9 @@ export class CardTable extends React.Component {
       if(i + 4 < cards.length){
         row.id5 = cards[(i)+4].id;
       }
-      this.cardRows.push(row);
+      rows.push(row);
     }
-    this.setState({
-      rendered: true
-    });
+    this.cardRows = rows;
   }
 
   render() {
