@@ -1,4 +1,5 @@
 var dbfunctions = require("../db/dbfunctions.js"),
+    draftFunctions = require("../db/draftFunctions.js"),
     express = require('express'),
     multer = require('multer'),
     router = express.Router();
@@ -7,6 +8,7 @@ var uploads = multer({
   dest: './uploads/'
 });
 
+//calls to /api/cube
 router.route('/cube')
       .get(dbfunctions.getCubes);
 
@@ -21,6 +23,12 @@ router.route('/cube/:cube_id')
   .get(dbfunctions.getCubeCards, dbfunctions.getCubeMFCards)
   .post(uploads.single('cubetxt'), dbfunctions.addTxtToCube);
 
+//calls to /api/draft
+router.route('/draft/:cube_id')
+  .get(draftFunctions.getDraftStats)
+  .post(draftFunctions.saveDraft);
+
+//parameter middleware
 router.param('cube_id', dbfunctions.cubeByID);
 
 module.exports = router;

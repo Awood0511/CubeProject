@@ -40,6 +40,7 @@ export class AllCubesTable extends React.Component {
                     <th>Card List</th>
                     <th>Visual Spoiler</th>
                     <th>Edit</th>
+                    <th>Draft</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -50,6 +51,7 @@ export class AllCubesTable extends React.Component {
                       <td><a href={"/cube/view/" + cube.cube_id}>View</a></td>
                       <td><a href={"/cube/visual/" + cube.cube_id}>Visual</a></td>
                       <td><a href={"/cube/edit/" + cube.cube_id}>Edit</a></td>
+                      <td><a href={"/draft/solo/" + cube.cube_id}>Draft</a></td>
                     </tr>
                   )}
                 </tbody>

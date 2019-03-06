@@ -56,6 +56,11 @@ module.exports.init = function() {
     res.sendFile(path.join(__dirname + '../../../dist/htmls/cube_visual_spoiler.html'));
   });
 
+  //draft a cube by yourself with AI to fill in other players
+  app.get('/draft/solo/:cube_id', function(req, res){
+    res.sendFile(path.join(__dirname + '../../../dist/htmls/solo_draft.html'));
+  });
+
   //send site image (temporarily George Costanza)
   app.get('/favicon.ico', function(req,res){
     res.sendFile(path.join(__dirname + '../../../dist/images/god.jpg'));
