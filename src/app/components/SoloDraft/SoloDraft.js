@@ -12,6 +12,8 @@ export class SoloDraft extends React.Component {
       pick: 1
     };
     this.draft_time;
+    this.player = "Adam";//placeholder will select actual player who is logged in
+    this.draft_id;
 
     //get cube_id
     let url = window.location.href;
@@ -37,6 +39,18 @@ export class SoloDraft extends React.Component {
   //async calls to API to get cube and draft pick priority information
   componentDidMount() {
     this.getDateTime();
+    //create the draft
+    axios.post("/api/draft/" + this.cube_id, {
+      player: this.player,
+      draft_time: this.draft_time
+    }).then(
+      response => {
+        this.draft_id = response.data.insertId;
+      },
+      error => {
+        console.log(error);
+      }
+    );
     //get draft information
     axios.get("/api/draft/" + this.cube_id).then(
       response => {
@@ -185,14 +199,13 @@ export class SoloDraft extends React.Component {
 
   //saves the pick into the database
   log_player_pick(draftCard){
-    axios.post('/api/draft/' + this.cube_id, {
+    axios.post('/api/draft/pick/' + this.draft_id, {
       id: draftCard.card.id,
       pack: this.state.pack,
-      pick: this.state.pick,
-      draft_time: this.draft_time
+      pick: this.state.pick
     }).then(
       response => {
-        console.log("Drafted successfully.");
+        //successful draft pick
       },
       error => {
         console.log(error);

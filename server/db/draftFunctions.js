@@ -4,7 +4,7 @@ var server = require("../config/express.js"),
 //get all the previous drafts for a cube
 exports.getDraftStats = function(req, res){
   var cube_id = req.cube_id;
-  var query = "Select * from draft_picks where cube_id = " + cube_id;
+  var query = "Select draft_picks.* from draft_picks inner join draft where draft.draft_id = draft_picks.draft_id and draft.cube_id = " + cube_id;
   server.connection.query(query, function(error, rows, fields) {
     if(error){
       console.log(error);
@@ -15,7 +15,7 @@ exports.getDraftStats = function(req, res){
   });
 }
 
-exports.createDraft = function(){
+exports.createDraft = function(req, res){
   var draft = {
     cube_id: req.cube_id,
     player: req.body.player,
@@ -28,7 +28,7 @@ exports.createDraft = function(){
       res.status(400).end();
       return;
     }
-    res.send(result.insertId);
+    res.json(result);
   });
 }
 
