@@ -56,6 +56,7 @@ export class DraftStats extends React.Component {
       var entry = {
         card: this.cubeCards[i],
         priority: 7.5,
+        non_normalized: 7.5,
         count: 0
       };
 
@@ -69,7 +70,8 @@ export class DraftStats extends React.Component {
         }
       }
       if(count > 0){
-        entry.priority = total/count;
+        entry.priority = total/count + (7.5-(total/count))/count;
+        entry.non_normalized = total/count;
         entry.count = count;
         this.cardsWithStats.push(entry);
       }
@@ -100,6 +102,7 @@ export class DraftStats extends React.Component {
                     <th>Name</th>
                     <th>Color</th>
                     <th>Priority</th>
+                    <th>Non-Normalized</th>
                     <th># Drafted</th>
                   </tr>
                 </thead>
@@ -110,6 +113,7 @@ export class DraftStats extends React.Component {
                         <td>{stat.card.cname}</td>
                         <td>{stat.card.cc_color}</td>
                         <td>{stat.priority}</td>
+                        <td>{stat.non_normalized}</td>
                         <td>{stat.count}</td>
                       </tr>
                     );
