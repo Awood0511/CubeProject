@@ -194,7 +194,7 @@ export class SoloDraft extends React.Component {
     var choice = this.packs[pack_i][i];
     this.packs[pack_i].splice(i,1);
     this.picks[0].push(choice.card);
-    //this.log_player_pick(choice);
+    this.log_player_pick(choice);
     this.ai_pick();
   }
 

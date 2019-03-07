@@ -31,13 +31,10 @@ export class TxtSubmission extends React.Component {
 
   render () {
     return (
-      <div className="row">
-        <div className="col">
-          Upload a text file:
-          <input type="file" name="cubetxt" onChange={this.fileChange.bind(this)}></input>
-        </div>
-        <div className="col">
+      <div className="row align-items-center">
+        <div className="col-sm-auto offset-sm-5">
           <button onClick={this.handlePost.bind(this)}>Upload</button>
+          <input type="file" name="cubetxt" onChange={this.fileChange.bind(this)}></input>
         </div>
       </div>
     );

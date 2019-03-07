@@ -178,27 +178,27 @@ export class CubeTableContainer extends React.Component {
               </div>
             </div>
           </div>
-          <div className="row justify-content-sm-center">
-            <div className="col-sm-auto">
-              <CubeTable cards={this.whiteCards} color={"White"} bgcolor={"#fcffef"} txtcolor={"#000000"}/>
+          <div className="row justify-content-center">
+            <div className="table_div">
+              <CubeTable cards={this.whiteCards} color={"White"}/>
             </div>
-            <div className="col-sm-auto">
-              <CubeTable cards={this.blueCards} color={"Blue"} bgcolor={"#5b9aff"} txtcolor={"#0400ff"}/>
+            <div className="table_div">
+              <CubeTable cards={this.blueCards} color={"Blue"}/>
             </div>
-            <div className="col-sm-auto">
-              <CubeTable cards={this.blackCards} color={"Black"} bgcolor={"#686868"} txtcolor={"#000000"}/>
+            <div className="table_div">
+              <CubeTable cards={this.blackCards} color={"Black"}/>
             </div>
-            <div className="col-sm-auto">
-              <CubeTable cards={this.redCards} color={"Red"} bgcolor={"#ed3d3d"} txtcolor={"#ff0000"}/>
+            <div className="table_div">
+              <CubeTable cards={this.redCards} color={"Red"}/>
             </div>
-            <div className="col-sm-auto">
-              <CubeTable cards={this.greenCards} color={"Green"} bgcolor={"#3bb53b"} txtcolor={"#008e10"}/>
+            <div className="table_div">
+              <CubeTable cards={this.greenCards} color={"Green"}/>
             </div>
-            <div className="col-sm-auto">
-              <CubeTable cards={this.otherCards} color={"Multicolor"} bgcolor={"#eddd53"} txtcolor={"#000000"}/>
+            <div className="table_div">
+              <CubeTable cards={this.otherCards} color={"Multicolor"}/>
             </div>
-            <div className="col-sm-auto">
-              <CubeTable cards={this.colorlessCards} color={"Colorless"} bgcolor={"#E0E1E0"} txtcolor={"#000000"}/>
+            <div className="table_div">
+              <CubeTable cards={this.colorlessCards} color={"Colorless"}/>
             </div>
           </div>
         </div>

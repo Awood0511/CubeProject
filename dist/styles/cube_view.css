@@ -1,10 +1,13 @@
+body {
+  background-color: #202733;
+}
+
 /* styling for box that contains pop-in images */
 .imgrow {
   display: flex;
   z-index: 1;
   position: fixed;
 }
-
 .imgcol {
   flex: 50%;
   padding-right: 252px;
@@ -17,24 +20,110 @@ img {
   position: absolute;
 }
 
-th {
-  text-align: center;
-  font-size: 13pt;
+/* styling for tables */
+table {
+  border: solid;
+}
+.table_wrapper {
 }
 
-td {
+table.table_White {
+  background-color: #f7f7dc;
+  border-color: #ffffff;
+}
+.special_td_White {
+  color: #ffffff;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  border-top: solid;
+  border-bottom: solid;
+  border-color: #ffffff;
+}
+
+table.table_Blue {
+  background-color: #5b9aff;
+  border-color: #0400ff;
+}
+.special_td_Blue {
+  color: #0400ff;
+  border-top: solid;
+  border-bottom: solid;
+  border-color: #0400ff;
+}
+
+table.table_Black {
+  background-color: #686868;
+  border-color: #000000;
+}
+.special_td_Black {
+  color: #000000;
+  border-top: solid;
+  border-bottom: solid;
+  border-color: #000000;
+}
+
+table.table_Red {
+  background-color: #ff6868;
+  border-color: #ff0000;
+}
+.special_td_Red {
+  color: #ff0000;
+  border-top: solid;
+  border-bottom: solid;
+  border-color: #ff0000;
+}
+
+table.table_Green {
+  background-color: #3bb53b;
+  border-color: #008e10;
+}
+.special_td_Green {
+  color: #008e10;
+  border-top: solid;
+  border-bottom: solid;
+  border-color: #008e10;
+}
+
+table.table_Multicolor {
+  background-color: #f3e69e;
+  border-color: #d2b72d;
+}
+.special_td_Multicolor {
+  color: #d2b72d;
+  border-top: solid;
+  border-bottom: solid;
+  border-color: #d2b72d;
+}
+
+table.table_Colorless {
+  background-color: #e0e1e0;
+  border-color: #666666;
+}
+.special_td_Colorless {
+  color: #666666;
+  border-top: solid;
+  border-bottom: solid;
+  border-color: #666666;
+}
+
+th {
+  font-size: 14pt;
+}
+td, th {
+  text-align: center;
+  font-size: 13pt;
+  font-weight: bolder;
+  padding: 5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+td.cname_td {
+  text-align: left;
+  font-weight: bold;
   font-size: 12pt;
-  padding-left: 5px;
-  padding-right: 5px;
   padding-top: 1px;
   padding-bottom: 1px;
 }
 
-td.special_td {
-  text-align: center;
-  font-size: 13pt;
-  padding-left: 5px;
-  padding-right: 5px;
-  padding-top: 2px;
-  padding-bottom: 2px;
+div.table_div {
+  width: 14%;
 }
