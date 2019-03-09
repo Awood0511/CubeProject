@@ -76,7 +76,7 @@ export class CardTable extends React.Component {
     if(this.state.rendered){
       return (
         <div className="row justify-content-md-center">
-          <div className="col col-md-8 col-md-offset-2">
+          <div className="col col-md-10 col-md-offset-1">
             <table>
               <tbody>
                 {this.cardRows.map((row,i) => <CardRow row={row} key={i}/>)}
