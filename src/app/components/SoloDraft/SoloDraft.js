@@ -42,7 +42,7 @@ export class SoloDraft extends React.Component {
   componentDidMount() {
     this.getDateTime();
     //create the draft
-    axios.post("/api/draft/" + this.cube_id, {
+    /*axios.post("/api/draft/" + this.cube_id, {
       player: this.player,
       draft_time: this.draft_time
     }).then(
@@ -52,7 +52,7 @@ export class SoloDraft extends React.Component {
       error => {
         console.log(error);
       }
-    );
+    );*/
     //get draft information
     axios.get("/api/draft/" + this.cube_id).then(
       response => {
@@ -154,10 +154,23 @@ export class SoloDraft extends React.Component {
   ai_pick() {
     for(var i = 1; i < 8; i+=1){
       //calculate pack to choose from
-      var pack_i = ((this.state.pack-1) * 8) + (this.state.pick-1) + i;
-      while(pack_i >= this.state.pack*8){
-        pack_i -= 8;
+      var pack_i;
+      //pass right
+      if(this.state.pack === 2){
+        pack_i = ((this.state.pack-1) * 8) + (this.state.pick-1) + i;
+        while(pack_i >= this.state.pack*8){
+          pack_i -= 8;
+        }
       }
+      //pass left
+      else {
+        pack_i = ((this.state.pack-1) * 8) - (this.state.pick-1) + i;
+        while(pack_i < (this.state.pack-1)*8){
+          pack_i += 8;
+        }
+      }
+      console.log("Player " + (i+1));
+      console.log(pack_i);
       //loop through that pack and choose the highest priority card
       var best;
       var indexOfBest;
@@ -169,9 +182,11 @@ export class SoloDraft extends React.Component {
           best = this.packs[pack_i][k];
         }
       }
+      console.log("Index of Best: " + indexOfBest);
+      console.log(best);
       //splice out highest priority card and add it to the ai's picks
-      this.packs[pack_i].splice(indexOfBest,1);
       this.picks[i].push(best.card);
+      this.packs[pack_i].splice(indexOfBest,1);
     }
 
     var newPick = this.state.pick+1;
@@ -192,11 +207,13 @@ export class SoloDraft extends React.Component {
   //calls log_player_pick to save it to the db
   //call ai_pick to generate the ai's decisions
   player_pick(pack_i, i) {
+    console.log("Player 1");
+    console.log(pack_i);
     //splice out the index
     var choice = this.packs[pack_i][i];
-    this.packs[pack_i].splice(i,1);
     this.picks[0].push(choice.card);
-    this.log_player_pick(choice);
+    this.packs[pack_i].splice(i,1);
+    //this.log_player_pick(choice);
     this.ai_pick();
   }
 
@@ -218,9 +235,20 @@ export class SoloDraft extends React.Component {
 
   render() {
     //calculate the index of the pack the player is currently choosing from
-    var pack_i = ((this.state.pack-1) * 8) + (this.state.pick-1);
-    while(pack_i >= this.state.pack*8){
-      pack_i -= 8;
+    var pack_i;
+    //pass right
+    if(this.state.pack === 2){
+      pack_i = ((this.state.pack-1) * 8) + (this.state.pick-1);
+      while(pack_i >= this.state.pack*8){
+        pack_i -= 8;
+      }
+    }
+    //pass left
+    else {
+      pack_i = ((this.state.pack-1) * 8) - (this.state.pick-1);
+      while(pack_i < (this.state.pack-1)*8){
+        pack_i += 8;
+      }
     }
 
     //Remove Draft Screen when out of packs
