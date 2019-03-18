@@ -41,6 +41,10 @@ module.exports.init = function() {
   app.get('/', function(req, res){
     res.sendFile(path.join(__dirname + '../../../dist/htmls/home.html'));
   });
+  //signup form
+  app.get('/signup', function(req,res){
+    res.sendFile(path.join(__dirname + '../../../dist/htmls/signup.html'));
+  });
 
   //get a full cube view
   app.get('/cube/view/:cube_id', function(req, res){
