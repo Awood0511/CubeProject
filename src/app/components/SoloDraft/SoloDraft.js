@@ -42,7 +42,7 @@ export class SoloDraft extends React.Component {
   componentDidMount() {
     this.getDateTime();
     //create the draft
-    /*axios.post("/api/draft/" + this.cube_id, {
+    axios.post("/api/draft/" + this.cube_id, {
       player: this.player,
       draft_time: this.draft_time
     }).then(
@@ -52,7 +52,7 @@ export class SoloDraft extends React.Component {
       error => {
         console.log(error);
       }
-    );*/
+    );
     //get draft information
     axios.get("/api/draft/" + this.cube_id).then(
       response => {
@@ -213,7 +213,7 @@ export class SoloDraft extends React.Component {
     var choice = this.packs[pack_i][i];
     this.picks[0].push(choice.card);
     this.packs[pack_i].splice(i,1);
-    //this.log_player_pick(choice);
+    this.log_player_pick(choice);
     this.ai_pick();
   }
 

@@ -47,7 +47,6 @@ export class EditRow extends React.Component {
 
   onCopiesChange(e) {
     var num = this.state.copies;
-    console.log(e.target);
     if(e.target.name == "add_btn"){
       num += 1;
     } else {

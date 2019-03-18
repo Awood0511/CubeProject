@@ -1,5 +1,6 @@
-var dbfunctions = require("../db/dbfunctions.js"),
+var cubeFunctions = require("../db/cubeFunctions.js"),
     draftFunctions = require("../db/draftFunctions.js"),
+    userFunctions = require("../db/userFunctions.js"),
     express = require('express'),
     multer = require('multer'),
     router = express.Router();
@@ -10,18 +11,18 @@ var uploads = multer({
 
 //calls to /api/cube
 router.route('/cube')
-  .get(dbfunctions.getCubes);
+  .get(cubeFunctions.getCubes);
 
 router.route('/cube/create')
-  .post(dbfunctions.createCube);
+  .post(cubeFunctions.createCube);
 
 router.route('/cube/edit/:cube_id')
-  .get(dbfunctions.getCubeCards, dbfunctions.getEditCards)
-  .post(dbfunctions.updateCube);
+  .get(cubeFunctions.getCubeCards, cubeFunctions.getEditCards)
+  .post(cubeFunctions.updateCube);
 
 router.route('/cube/:cube_id')
-  .get(dbfunctions.getCubeCards, dbfunctions.getCubeMFCards)
-  .post(uploads.single('cubetxt'), dbfunctions.addTxtToCube);
+  .get(cubeFunctions.getCubeCards, cubeFunctions.getCubeMFCards)
+  .post(uploads.single('cubetxt'), cubeFunctions.addTxtToCube);
 
 //calls to /api/draft
 router.route('/draft')
@@ -35,8 +36,13 @@ router.route('/draft/:cube_id')
   .get(draftFunctions.getDraftStats)
   .post(draftFunctions.createDraft);
 
+//calls to /api/user
+router.route('/user')
+  .get(userFunctions.getUser)
+  .post(userFunctions.createAccount);
+
 //parameter middleware
-router.param('cube_id', dbfunctions.cubeByID);
+router.param('cube_id', cubeFunctions.cubeByID);
 router.param('draft_id', draftFunctions.draftByID);
 
 module.exports = router;

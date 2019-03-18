@@ -5,8 +5,7 @@ var path = require('path'),
     mysql = require('mysql'),
     server = require('./express.js'),
     dbconfig = require('./dbconfig.js'),
-    dbfunctions = require('../db/dbfunctions.js'),
-    functionRouter = require('../routes/routes.js');;
+    functionRouter = require('../routes/routes.js');
 
 module.exports.init = function() {
   //initialize app

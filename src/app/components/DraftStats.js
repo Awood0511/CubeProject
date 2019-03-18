@@ -171,7 +171,7 @@ export class DraftStats extends React.Component {
             <div className="col col-md-10 col-md-offset-1">
               <table className="table table-hover">
                 <thead>
-                  <tr class="header_row">
+                  <tr className="header_row">
                     <th onClick={this.handleClick} onMouseEnter={this.highlight} onMouseLeave={this.unhighlight} name="name">Name</th>
                     <th onClick={this.handleClick} onMouseEnter={this.highlight} onMouseLeave={this.unhighlight} name="color">Color</th>
                     <th onClick={this.handleClick} onMouseEnter={this.highlight} onMouseLeave={this.unhighlight} name="priority">Priority</th>
@@ -182,7 +182,7 @@ export class DraftStats extends React.Component {
                 <tbody>
                   {this.cardsWithStats.map(function(stat, i){
                     return (
-                      <tr key={i} class={"tr_" + stat.card.cc_color}>
+                      <tr key={i} className={"tr_" + stat.card.cc_color}>
                         <td>{stat.card.cname}</td>
                         <td>{stat.card.cc_color}</td>
                         <td>{stat.priority}</td>
