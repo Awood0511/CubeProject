@@ -32,7 +32,7 @@ exports.getCubeMFCards = function(req, res) {
 } //end getCubeMFCards
 
 //gets cards that share a cname with cards in a cube to facilitate swapping sets
-exports.getEditCards = function(req, res, next) {
+exports.getEditCards = function(req, res) {
   var names = "";
   if(req.cube_cards.length > 0){
       names += "\"" + req.cube_cards[0].cname + "\"";
@@ -58,6 +58,36 @@ exports.cubeByID = function(req, res, next, cube_id){
   req.cube_id = cube_id;
   next();
 } //end cubeByID
+
+//checks if the cube_id belongs to the currently logged in user to prevent
+//edits/access by people who do not own it
+exports.checkCubeOwner = function(req, res, next){
+  var username;
+  if(!req.user){
+      username = "Anonymous";
+  }
+  else{
+    username = req.user.username;
+  }
+
+  server.connection.query("Select * from mtgcube where cube_id = " + req.cube_id, function(err, rows, fields){
+    if(err){
+      console.log(err);
+      res.status(400).end();
+      return;
+    }
+    //deny access if cube owner != current user's username
+    if(!rows[0]){
+      res.status(400).send("Access Denied");
+    }
+    else if(rows[0].player !== username){
+      res.status(400).send("Access Denied");
+    }
+    else{
+      next();
+    }
+  });
+}
 
 /*------------------------------------------------------------------------------------------*/
 
