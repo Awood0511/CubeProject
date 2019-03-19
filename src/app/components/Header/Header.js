@@ -11,7 +11,7 @@ export class Header extends React.Component {
     };
   }
 
-  componentDidMount() {
+  getUser(){
     axios.get("/api/user").then(
       response => {
         //save cube card information
@@ -25,8 +25,12 @@ export class Header extends React.Component {
     );
   }
 
+  componentDidMount() {
+    this.getUser();
+  }
+
   render() {
-    if(this.state.username !== null){
+    if(this.state.username === "Anonymous"){
       return (
         <nav className="navbar navbar-expand-md navbar-dark bg-dark justify-content-between">
             <div className="navbar-header">
@@ -39,13 +43,36 @@ export class Header extends React.Component {
                 </li>
               </ul>
             </div>
-            <UserControl username={this.state.username}/>
+            <UserControl username={this.state.username} getUser={this.getUser.bind(this)}/>
         </nav>
       );
     }
-    else{
+    else if(this.state.username === null){
       return (
         <></>
+      );
+    }
+    else{
+      return(
+        <nav className="navbar navbar-expand-md navbar-dark bg-dark justify-content-between">
+            <div className="navbar-header">
+              <ul className="navbar-nav mr-auto">
+                <li className="nav-item active">
+                  <a className="nav-link" href="/">Home</a>
+                </li>
+                <li className="nav-item active">
+                  <a className="nav-link" href="/cubes">Cubes</a>
+                </li>
+                <li className="nav-item active">
+                  <a className="nav-link" href="/user/cubes">My Cubes</a>
+                </li>
+                <li className="nav-item active">
+                  <a className="nav-link" href="/user/drafts">Drafts</a>
+                </li>
+              </ul>
+            </div>
+            <UserControl username={this.state.username}/>
+        </nav>
       );
     }
   }

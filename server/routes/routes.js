@@ -2,6 +2,7 @@ var cubeFunctions = require("../db/cubeFunctions.js"),
     draftFunctions = require("../db/draftFunctions.js"),
     userFunctions = require("../db/userFunctions.js"),
     express = require('express'),
+    passport = require('passport'),
     multer = require('multer'),
     router = express.Router();
 
@@ -40,6 +41,9 @@ router.route('/draft/:cube_id')
 router.route('/user')
   .get(userFunctions.getUser)
   .post(userFunctions.createAccount);
+
+router.route('/user/login')
+  .post(passport.authenticate('local', { successRedirect: '/'}));
 
 //parameter middleware
 router.param('cube_id', cubeFunctions.cubeByID);

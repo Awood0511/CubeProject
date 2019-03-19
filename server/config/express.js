@@ -1,9 +1,12 @@
 var path = require('path'),
     express = require('express'),
+    session = require("express-session"),
     morgan = require('morgan'),
     bodyParser = require('body-parser'),
     mysql = require('mysql'),
     server = require('./express.js'),
+    passport = require('passport'),
+    passConfig = require('./passport.js'),
     dbconfig = require('./dbconfig.js'),
     functionRouter = require('../routes/routes.js');
 
@@ -29,10 +32,13 @@ module.exports.init = function() {
   });
 
   //activate middleware
+  app.use(express.static(path.resolve('./dist')));
+  app.use(session({ secret: dbconfig.secret }));
   app.use(morgan('dev'));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
-  app.use(express.static(path.resolve('./dist')));
+  app.use(passport.initialize());
+  app.use(passport.session());
 
   //use router for calls to the api
   app.use('/api/', functionRouter);
