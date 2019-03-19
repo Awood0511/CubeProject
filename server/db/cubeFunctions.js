@@ -74,13 +74,26 @@ exports.getCubes = function(req, res) {
   }); //end query
 } //end getCubes
 
+//gets a list of all the mtgcubes associated with the current user
+exports.getPlayerCubes = function(req, res) {
+  var query_str = "select * from mtgcube where player = \"" + req.user.username + "\"";
+  server.connection.query(query_str, function(err, rows, fields){
+    if(err){
+      console.log(err);
+      res.status(400);
+    } else {
+      res.json(rows);
+    }
+  }); //end query
+} //end getCubes
+
 /*------------------------------------------------------------------------------------------*/
 
 //create a cube given a player and a cube name
 exports.createCube = function(req, res) {
   console.log(req.body);
   var entry = {
-    player: req.body.player,
+    player: req.user.username,
     cube_name: req.body.cube_name
   };
 

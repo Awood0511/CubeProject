@@ -6,15 +6,8 @@ export class CubeCreationForm extends React.Component {
   constructor() {
     super();
     this.state = {
-      player: "",
       cube_name: ""
     }
-  }
-
-  playerChange(e) {
-    this.setState({
-      player: e.target.value
-    });
   }
 
   nameChange(e) {
@@ -26,18 +19,16 @@ export class CubeCreationForm extends React.Component {
   handlePost(e) {
     console.log("Making a post request");
     axios.post('/api/cube/create', {
-      player: this.state.player,
       cube_name: this.state.cube_name
     }).then(
       response => {
-        console.log("response received");
+        //cube created
       },
       error => {
         console.log(error);
       }
     );
     this.setState({
-      player: "",
       cube_name: ""
     });
   }
@@ -47,8 +38,6 @@ export class CubeCreationForm extends React.Component {
       <div className="container">
         <div className="row">
           <div className="col">
-            Player:
-            <input type="text" value={this.state.player} onChange={this.playerChange.bind(this)}></input>
             Cube Name:
             <input type="text" value={this.state.cube_name} onChange={this.nameChange.bind(this)}></input>
             <button onClick={this.handlePost.bind(this)}>Make Cube</button>

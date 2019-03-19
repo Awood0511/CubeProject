@@ -52,6 +52,14 @@ module.exports.init = function() {
     res.sendFile(path.join(__dirname + '../../../dist/htmls/signup.html'));
   });
 
+  //get a list of all cubes
+  app.get('/cube/all', function(req, res){
+    res.sendFile(path.join(__dirname + '../../../dist/htmls/all_cubes.html'));
+  });
+  //get a list of all cubes for the user
+  app.get('/cube/player', function(req, res){
+    res.sendFile(path.join(__dirname + '../../../dist/htmls/player_cubes.html'));
+  });
   //get a full cube view
   app.get('/cube/view/:cube_id', function(req, res){
     res.sendFile(path.join(__dirname + '../../../dist/htmls/cube_view.html'));
@@ -65,8 +73,12 @@ module.exports.init = function() {
     res.sendFile(path.join(__dirname + '../../../dist/htmls/cube_visual_spoiler.html'));
   });
 
+  //get a list of all drafts done by the logged in player
+  app.get('/draft/player', function(req, res){
+    res.sendFile(path.join(__dirname + '../../../dist/htmls/player_drafts.html'));
+  });
   //draft a cube by yourself with AI to fill in other players
-  app.get('/draft/solo/:draft_id', function(req, res){
+  app.get('/draft/solo/:cube_id', function(req, res){
     res.sendFile(path.join(__dirname + '../../../dist/htmls/solo_draft.html'));
   });
   //view previously drafted cubes
@@ -82,8 +94,6 @@ module.exports.init = function() {
   app.get('/favicon.ico', function(req,res){
     res.sendFile(path.join(__dirname + '../../../dist/images/god.jpg'));
   });
-
-
   // redirect anything that isnt an pathname specified above to home
   app.get('*', function(req, res){
       res.redirect('/');

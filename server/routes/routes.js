@@ -14,6 +14,9 @@ var uploads = multer({
 router.route('/cube')
   .get(cubeFunctions.getCubes);
 
+router.route('/cube/player')
+  .get(cubeFunctions.getPlayerCubes);
+
 router.route('/cube/create')
   .post(cubeFunctions.createCube);
 
@@ -28,6 +31,9 @@ router.route('/cube/:cube_id')
 //calls to /api/draft
 router.route('/draft')
   .get(draftFunctions.getAllDrafts);
+
+router.route('/draft/player')
+  .get(draftFunctions.getPlayerDrafts);
 
 router.route('/draft/pick/:draft_id')
   .get(draftFunctions.getCardsFromDraft)

@@ -3,5 +3,6 @@ CREATE TABLE draft (
 	cube_id INT,
     player VARCHAR(255),
     draft_time DATETIME,
-    FOREIGN KEY (cube_id) REFERENCES Mtgcube(cube_id)
+    FOREIGN KEY (cube_id) REFERENCES Mtgcube(cube_id),
+    FOREIGN KEY (player) REFERENCES player(username)
 );

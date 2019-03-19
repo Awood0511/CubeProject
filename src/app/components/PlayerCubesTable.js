@@ -2,8 +2,8 @@ import React from "react";
 import {render} from "react-dom";
 import axios from "axios";
 
-export class AllCubesTable extends React.Component {
-  constructor() {
+export class PlayerCubesTable extends React.Component {
+  constructor(props) {
     super();
     this.state = {
       cubes: false
@@ -12,7 +12,7 @@ export class AllCubesTable extends React.Component {
   }
 
   componentDidMount() {
-    axios.get("/api/cube/").then(
+    axios.get("/api/cube/player").then(
       response => {
         this.cubes = response.data;
         this.setState({
@@ -36,9 +36,9 @@ export class AllCubesTable extends React.Component {
                 <thead>
                   <tr>
                     <th>Name</th>
-                    <th>Owner</th>
                     <th>Card List</th>
                     <th>Visual Spoiler</th>
+                    <th>Edit</th>
                     <th>Draft</th>
                     <th>Stats</th>
                   </tr>
@@ -47,9 +47,9 @@ export class AllCubesTable extends React.Component {
                   {this.cubes.map(cube =>
                     <tr key={cube.cube_id}>
                       <td>{cube.cube_name}</td>
-                      <td>{cube.player}</td>
                       <td><a href={"/cube/view/" + cube.cube_id}>View</a></td>
                       <td><a href={"/cube/visual/" + cube.cube_id}>Visual</a></td>
+                      <td><a href={"/cube/edit/" + cube.cube_id}>Edit</a></td>
                       <td><a href={"/draft/solo/" + cube.cube_id}>Draft</a></td>
                       <td><a href={"/draft/stats/" + cube.cube_id}>AI Stats</a></td>
                     </tr>
@@ -70,5 +70,5 @@ export class AllCubesTable extends React.Component {
 } //end CardTable
 
 try{
-    render(<AllCubesTable/>, window.document.getElementById("all_cubes_table"));
+    render(<PlayerCubesTable/>, window.document.getElementById("player_cubes_table"));
 } catch(err) {}

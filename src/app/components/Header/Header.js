@@ -39,7 +39,7 @@ export class Header extends React.Component {
                   <a className="nav-link" href="/">Home</a>
                 </li>
                 <li className="nav-item active">
-                  <a className="nav-link" href="/cube">Cubes</a>
+                  <a className="nav-link" href="/cube/all">Cubes</a>
                 </li>
               </ul>
             </div>
@@ -61,13 +61,13 @@ export class Header extends React.Component {
                   <a className="nav-link" href="/">Home</a>
                 </li>
                 <li className="nav-item active">
-                  <a className="nav-link" href="/cubes">Cubes</a>
+                  <a className="nav-link" href="/cube/all">Cubes</a>
                 </li>
                 <li className="nav-item active">
-                  <a className="nav-link" href="/user/cubes">My Cubes</a>
+                  <a className="nav-link" href="/cube/player">My Cubes</a>
                 </li>
                 <li className="nav-item active">
-                  <a className="nav-link" href="/user/drafts">Drafts</a>
+                  <a className="nav-link" href="/draft/player">Drafts</a>
                 </li>
               </ul>
             </div>

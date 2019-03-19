@@ -13,7 +13,6 @@ export class SoloDraft extends React.Component {
       pick: 1
     };
     this.draft_time;
-    this.player = "Adam";//placeholder will select actual player who is logged in
     this.draft_id;
 
     //get cube_id
@@ -43,7 +42,6 @@ export class SoloDraft extends React.Component {
     this.getDateTime();
     //create the draft
     axios.post("/api/draft/" + this.cube_id, {
-      player: this.player,
       draft_time: this.draft_time
     }).then(
       response => {
