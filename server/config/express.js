@@ -72,6 +72,10 @@ module.exports.init = function() {
   app.get('/cube/visual/:cube_id', function(req, res){
     res.sendFile(path.join(__dirname + '../../../dist/htmls/cube_visual_spoiler.html'));
   });
+  //get a cube visual spoiler
+  app.get('/cube/price/:cube_id', function(req, res){
+    res.sendFile(path.join(__dirname + '../../../dist/htmls/cube_price.html'));
+  });
 
   //get a list of all drafts done by the logged in player
   app.get('/draft/player', function(req, res){

@@ -41,6 +41,7 @@ export class PlayerCubesTable extends React.Component {
                     <th>Edit</th>
                     <th>Draft</th>
                     <th>Stats</th>
+                    <th>Prices</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -52,6 +53,7 @@ export class PlayerCubesTable extends React.Component {
                       <td><a href={"/cube/edit/" + cube.cube_id}>Edit</a></td>
                       <td><a href={"/draft/solo/" + cube.cube_id}>Draft</a></td>
                       <td><a href={"/draft/stats/" + cube.cube_id}>AI Stats</a></td>
+                      <td><a href={"/cube/price/" + cube.cube_id}>Prices</a></td>
                     </tr>
                   )}
                 </tbody>
