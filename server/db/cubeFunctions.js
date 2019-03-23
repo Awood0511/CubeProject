@@ -37,6 +37,9 @@ exports.getEditCards = function(req, res) {
   if(req.cube_cards.length > 0){
       names += "\"" + req.cube_cards[0].cname + "\"";
   }
+  else{
+    names = "\"\"";
+  }
   for(var i = 1; i < req.cube_cards.length; i+=1){
     names += ", \"" + req.cube_cards[i].cname + "\"";
   }

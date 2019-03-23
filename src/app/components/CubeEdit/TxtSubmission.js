@@ -2,11 +2,13 @@ import React from "react";
 import axios from "axios";
 
 export class TxtSubmission extends React.Component {
-  constructor(props) {
+  constructor() {
     super();
     this.state = {
       file: null
     }
+    let url = window.location.href;
+    this.cube_id = url.substring(url.lastIndexOf("/")+1, url.length);
   }
 
   fileChange(e) {
@@ -19,7 +21,7 @@ export class TxtSubmission extends React.Component {
     const fd = new FormData();
     fd.append('cubetxt', this.state.file, this.state.file.name);
 
-    axios.post('/api/cube/' + this.props.cube_id, fd).then(
+    axios.post('/api/cube/' + this.cube_id, fd).then(
       response => {
         console.log("response received");
       },

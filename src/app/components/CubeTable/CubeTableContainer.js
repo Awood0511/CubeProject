@@ -1,7 +1,7 @@
 import React from "react";
 import {render} from "react-dom";
 import {CubeTable} from "./CubeTable";
-import {TxtSubmission} from "./TxtSubmission";
+import {CubeToTxt} from "./CubeToTxt";
 import axios from "axios";
 
 export class CubeTableContainer extends React.Component {
@@ -167,7 +167,9 @@ export class CubeTableContainer extends React.Component {
     if(this.state.rendered){
       return (
         <div className="container-fluid">
-          <TxtSubmission cube_id={this.cube_id}/>
+          <div className="row justify-content-center my-2">
+            <CubeToTxt cards={this.cubeCards}/>
+          </div>
           <div className="row">
             <div className="imgrow" id={"imageDiv"}>
               <div className="imgcol">

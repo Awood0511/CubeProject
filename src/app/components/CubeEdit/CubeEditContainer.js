@@ -36,16 +36,12 @@ export class CubeEditContainer extends React.Component {
     if(this.state.rendered){
       return (
         <div className="container-fluid">
-          <div className="row">
-            <div className="col">
-              <EditTable cubeCards={this.cubeCards} editCards={this.editCards} cube_id={this.cube_id}/>
-            </div>
-          </div>
+          <EditTable cubeCards={this.cubeCards} editCards={this.editCards} cube_id={this.cube_id}/>
         </div>
       );
     } else {
       return (
-        <div>Loading...</div>
+        <></>
       );
     }
   }

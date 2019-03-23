@@ -126,9 +126,13 @@ export class EditRow extends React.Component {
             }, this)}
           </select>
         </td>
-        <button name="add_btn" className="btn btn-small" style={{backgroundColor: "green"}} onClick={this.onCopiesChange}>+</button>
-        <td>{this.state.copies}</td>
-        <button name="sub_btn" className="btn btn-small" style={{backgroundColor: "red"}} onClick={this.onCopiesChange}>-</button>
+        <td>
+          <div>
+            <button name="add_btn" className="btn btn-small mr-2" style={{backgroundColor: "green"}} onClick={this.onCopiesChange}>+</button>
+            {this.state.copies}
+            <button name="sub_btn" className="btn btn-small ml-2" style={{backgroundColor: "red"}} onClick={this.onCopiesChange}>-</button>
+          </div>
+        </td>
       </tr>
     );
   }

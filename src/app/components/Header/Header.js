@@ -32,19 +32,21 @@ export class Header extends React.Component {
   render() {
     if(this.state.username === "Anonymous"){
       return (
-        <nav className="navbar navbar-expand-md navbar-dark bg-dark justify-content-between">
-            <div className="navbar-header">
-              <ul className="navbar-nav mr-auto">
-                <li className="nav-item active">
-                  <a className="nav-link" href="/">Home</a>
-                </li>
-                <li className="nav-item active">
-                  <a className="nav-link" href="/cube/all">Cubes</a>
-                </li>
-              </ul>
-            </div>
-            <UserControl username={this.state.username} getUser={this.getUser.bind(this)}/>
-        </nav>
+        <div className="mb-3">
+          <nav className="navbar navbar-expand-md navbar-dark bg-dark justify-content-between">
+              <div className="navbar-header">
+                <ul className="navbar-nav mr-auto">
+                  <li className="nav-item active">
+                    <a className="nav-link" href="/">Home</a>
+                  </li>
+                  <li className="nav-item active">
+                    <a className="nav-link" href="/cube/all">Cubes</a>
+                  </li>
+                </ul>
+              </div>
+              <UserControl username={this.state.username} getUser={this.getUser.bind(this)}/>
+          </nav>
+        </div>
       );
     }
     else if(this.state.username === null){
