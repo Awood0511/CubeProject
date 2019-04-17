@@ -6,27 +6,42 @@ var mysql = require('mysql'),
     dbconfig = require('../../config/dbconfig.js');
 
 //missing: unsets / mtgo online only sets / promo sets
-var allSets = ['lea', 'leb', '2ed', 'arn', 'atq', '3ed', 'leg', 'drk', 'fem',
-               '4ed', 'ice', 'chr', 'hml', 'all', 'mir', 'vis', '5ed', 'por',
-               'wth', 'tmp', 'sth', 'exo', 'p02', 'usg', 'ath', 'ulg', '6ed',
-               'uds', 'ptk', 's99', 'mmq', 'brb', 'nem', 's00', 'pcy', 'inv',
-               'btd', 'pls', '7ed', 'apc', 'ody', 'dkm', 'tor', 'jud', 'ons',
-               'lgn', 'scg', '8ed', 'mrd', 'dst', '5dn', 'chk', 'bok', 'sok',
-               '9ed', 'rav', 'gpt', 'dis', 'csp', 'tsp', 'plc', 'fut', '10e',
-               'lrw', 'evg', 'mor', 'shm', 'eve', 'drb', 'ala', 'dd2', 'con',
-               'ddc', 'arb', 'm10', 'v09', 'hop',
-               'zen', 'ddd', 'h09', 'wwk', 'dde', 'roe', 'dpa', 'arc', 'm11',
-               'v10', 'ddf', 'som', 'pd2', 'mbs', 'ddg', 'nph', 'cmd', 'm12',
-               'v11', 'ddh', 'isd', 'pd3', 'dka', 'ddi', 'avr', 'pc2', 'm13',
-               'v12', 'ddj', 'rtr', 'cm1', 'gtc', 'ddk', 'dgm', 'mma', 'm14',
-               'v13', 'ddl', 'ths', 'c13', 'bng', 'ddm', 'jou', 'md1', 'cns',
-               'm15', 'v14', 'ddn', 'ktk', 'c14', 'frf', 'ddo', 'dtk',
-               'mm2', 'ori', 'v15', 'ddp', 'bfz', 'exp', 'c15', 'ogw', 'ddq',
-               'w16', 'soi', 'ema', 'emn', 'v16', 'cn2', 'ddr', 'kld', 'mps',
-               'c16', 'pca', 'aer', 'mm3', 'dds', 'w17', 'akh', 'mp2', 'hou',
-               'cma', 'e01', 'c17', 'xln', 'ddt', 'ima', 'e02', 'v17', 'rix',
-               'a25', 'ddu', 'dom', 'cm2', 'bbd', 'ss1', 'gs1', 'm19', 'c18',
-               'med', 'grn', 'gk1', 'gnt', 'uma', 'rna', 'gk2'];
+var allSets = [
+  //core sets
+  'LEA','LEB','2ED','3ED','4ED','5ED','6ED','7ED','8ED','9ED','10E','M10','M11',
+  'M12','M13','M14','M15','ORI','M19',
+  //expansion sets
+  'ARN','ATQ','LEG','DRK','FEM','HML','ICE','ALL','MIR','VIS','WTH','TMP','STH',
+  'EXO','USG','ULG','UDS','MMQ','NEM','PCY','INV','PLS','APC','ODY','TOR','JUD',
+  'ONS','LGN','SCG','MRD','DST','5DN','CHK','BOK','SOK','RAV','GPT','DIS','CSP',
+  'TSP','TSB','PLC','FUT','LRW','MOR','SHM','EVE','ALA','CON','ARB','ZEN','WWK',
+  'ROE','SOM','MBS','NPH','ISD','DKA','AVR','RTR','GTC','DGM','THS','BNG','JOU',
+  'KTK','FRF','DTK','BFZ','OGW','SOI','EMN','KLD','AER','AKH','HOU','XLN','RIX',
+  'DOM','GRN','RNA',
+  //Intro Sets
+  'POR','P02','PTK','S99','S00','GS1',
+  //compilation sets
+  'CHR','ATH','BRB','BTD','DKM','DPA','MD1',
+  //duel decks
+  'EVG','DD2','DDC','DDD','DDE','DDF','DDG','DDH','DDI','DDJ','DDK','DDL','DDM',
+  'DDN','DDO','DDP','DDQ','DDR','DDS','DDT','DDU',
+  //ftv/spellbook
+  'DRB','V09','V10','V11','V12','V13','V14','V15','V16','V17','SS1',
+  //premium deck series
+  'H09','PD2','PD3',
+  //masters sets
+  'MMA','MM2','EMA','MM3','IMA','A25','UMA',
+  //masterpieces
+  'EXP','MPS','MP2','MED',
+  //multiplayer sets
+  'HOP','PC2','PCA','ARC','E01','CMD','CM1','C13','C14','C15','C16','CMA','C17',
+  'CM2','C18','CNS','CN2','E02','BBD',
+  //non-legal sets TODO: un-sets
+  'CED',
+  //fnm cards
+  'F01','F02','F03','F04','F05','F06','F07','F08','F09','F10','F11','F12','F13','F14','F15','F16','F17','F18'
+  //promo cards TODO
+];
 
 var currentSet = 0;
 

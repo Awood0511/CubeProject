@@ -12,7 +12,7 @@ CREATE TABLE Card (
 	image text,
 	price float(10,2),
 	rarity text,
-	set_code varchar(3),
+	set_code varchar(10),
 	set_name text,
 	layout text,
 	artist text,

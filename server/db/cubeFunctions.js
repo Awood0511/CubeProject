@@ -254,7 +254,6 @@ exports.addTxtToCube = function(req, res){
 
   //add all cards to the cube that had matching name results
   var addCards = function(rows){
-    console.log(copy_info);
     //build insert array from unique card names found in the previous select statement
     var cube_cards = [];
     //build update array to add new copies to existing cards in the cube
@@ -328,6 +327,8 @@ exports.addTxtToCube = function(req, res){
   } //end addCards
 
   //find all ids associated with the card names in the txt
+  var allCards;
+  var cardsToAdd;
   var findCards = function(list){
     //if any ids are found pass them to addCards
     var query = "Select id,cname,color,type_line From multiface where cname IN (" + list + ") Union SELECT id,cname,color,type_line FROM card where cname IN (" + list + ") order by cname asc";
@@ -337,6 +338,23 @@ exports.addTxtToCube = function(req, res){
         res.status(400).end();
         return;
       }
+
+      //log which cards were not found from the txt file
+      console.log("Didn't Add:");
+      for(var i = 0; i < allCards.length; i+=1){
+        var matched = false;
+        for(var k = 0; k < rows.length; k+=1){
+          if(allCards[i].toUpperCase() === rows[k].cname.toUpperCase()){
+            matched = true;
+            break;
+          }
+        }
+        if(!matched){
+          console.log(allCards[i]);
+        }
+      }
+
+
       if(!rows[0]){
         console.log("Could not find any of the cards.");
         res.status(200).end();
@@ -347,9 +365,11 @@ exports.addTxtToCube = function(req, res){
   } //end findCards
 
   var loopThroughTxt = function(){
-    var allCards = fs.readFileSync('./uploads/' + req.file.filename).toString().split("\n");
+    allCards = fs.readFileSync('./uploads/' + req.file.filename).toString().split("\n");
+    cardsToAdd = allCards.length;
     var trimmedName = allCards[0].substring(0, allCards[0].length-1);
     addToCopyInfo(trimmedName);
+    allCards[0] = trimmedName;
     var searchList = "\"" + trimmedName + "\""; //first string in list of names
     for(var i = 1; i < allCards.length; i+=1){
       //build IN list of all the card names in the txt file
@@ -358,6 +378,7 @@ exports.addTxtToCube = function(req, res){
       if(!trimmedName.includes("\"")){
         searchList += ", \"" + trimmedName + "\"";
         addToCopyInfo(trimmedName);
+        allCards[i] = trimmedName;
       }
     }
     findCards(searchList);

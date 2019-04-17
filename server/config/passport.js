@@ -17,22 +17,27 @@ var validatePassword = function(password, hash, callback){
 //configure the strategy
 passport.use(new LocalStrategy(
   function(username, password, done) {
+    console.log(username);
+    console.log(password);
     //find a user that matches the username
     server.connection.query("select * from player where username = \"" + username + "\"", function(err, rows, fields){
+      console.log(rows);
       if(err){
         return done(err);
       }
-      if(!rows){
+      else if(!rows[0]){
         return done(null, false, { message: 'Incorrect username.' });
       }
-      validatePassword(password, rows[0].pass, function(match) {
-        if(match){
-          return done(null, rows[0]);
-        }
-        else{
-          return done(null, false, { message: 'Incorrect password.' });
-        }
-      });
+      else {
+        validatePassword(password, rows[0].pass, function(match) {
+          if(match){
+            return done(null, rows[0]);
+          }
+          else{
+            return done(null, false, { message: 'Incorrect password.' });
+          }
+        });
+      }
     });
   }
 ));
