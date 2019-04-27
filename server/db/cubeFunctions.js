@@ -50,9 +50,66 @@ exports.getEditCards = function(req, res) {
       res.status(400).end();
       return;
     }
-    res.json([req.cube_cards, rows]);
+
+    //allocate a hash table to store sets and ids indexed by the card name
+    var hashTable = new Array(27);
+    for(var i = 0; i < 27; i+=1){
+      // initialize each entry to an empty array
+      hashTable[i] = [];
+    }
+    //add all of the edit cards to the hash table
+    for(var i = 0; i < rows.length; i+=1){
+      addToEditHashTable(rows[i], hashTable);
+    }
+
+    //return information
+    res.json([req.cube_cards, hashTable]);
   });
 } //end getCubeCards
+
+//add a card name to the hash table
+var addToEditHashTable = function(editCard, hashTable){
+  var index = getEditTableIndex(editCard.cname);
+  var existed = false;
+
+  //check if the cname is already in the table
+  for(var i = 0; i < hashTable[index].length; i+=1){
+    //if matches, add the set_code and id
+    if(editCard.cname === hashTable[index][i].cname){
+      existed = true;
+      var newSetIdPair = {
+        id: editCard.id,
+        set_code: editCard.set_code
+      };
+      hashTable[index][i].setIdPair.push(newSetIdPair);
+      break;
+    }
+  }
+
+  //if cname not in table create a new entry for it
+  if(!existed){
+    var newEntry = {
+      cname: editCard.cname,
+      setIdPair: [{
+        id: editCard.id,
+        set_code: editCard.set_code
+      }]
+    };
+
+    hashTable[index].push(newEntry);
+  }
+}
+
+//get the bucket index from the card name
+var getEditTableIndex = function(cname){
+  //determine index for the key 0-26 -> a-z else index 27
+  var index = (cname.toUpperCase().charCodeAt(0)) - 65;
+
+  if(index < 0 || index > 25)
+    index = 26;
+
+  return index;
+}
 
 /*------------------------------------------------------------------------------------------*/
 

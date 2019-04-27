@@ -12,7 +12,7 @@ export class CardTable extends React.Component {
     this.setRows = this.setRows.bind(this);
   }
 
-  //check whennew props are passed in
+  //check when new props are passed in
   static getDerivedStateFromProps(nextProps, prevState){
     if(nextProps.cards !== prevState.cards){
       return { cards: nextProps.cards};
@@ -25,7 +25,6 @@ export class CardTable extends React.Component {
   //update state after props change
   componentDidUpdate(prevProps, prevState) {
     if(prevProps.cards !== this.props.cards){
-      //Perform some operation here
       this.setRows();
       this.setState({
         update: !this.state.update

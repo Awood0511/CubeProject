@@ -32,8 +32,6 @@ export class EditTable extends React.Component {
     for(var i = 0; i < this.props.cubeCards.length; i+=1){
       let card = this.props.cubeCards[i];
 
-      console.log("Adding: " + card.cname);
-
       if(card.cc_color == "White"){
         this.wCards.push(card);
       }
@@ -57,25 +55,24 @@ export class EditTable extends React.Component {
       }
     }
 
-    console.log("Setting State");
     this.setState({
       rendered: true
     });
   }
 
-  //gets a list of all the sets for a given cname
   getAllSets(cname) {
-    var sets = [];
-    for(var i = 0; i < this.props.editCards.length; i+=1){
-      if(cname === this.props.editCards[i].cname){
-        var entry = {
-          id: this.props.editCards[i].id,
-          set_code: this.props.editCards[i].set_code
-        };
-        sets.push(entry);
+    // get bucket index from cname
+    var index = (cname.toUpperCase().charCodeAt(0)) - 65;
+    if(index < 0 || index > 25)
+      index = 26;
+
+    //return the array of sets and ids
+    for(var i = 0; i < this.props.editCards[index].length; i+=1){
+      //if names match return the setIdPair
+      if(this.props.editCards[index][i].cname === cname){
+        return (this.props.editCards[index][i].setIdPair);
       }
     }
-    return(sets);
   }
 
   render() {
@@ -86,13 +83,6 @@ export class EditTable extends React.Component {
       return (
         <div>
           <div className="row">
-            <div className="col-md-6">
-              <input type="text" name="city" list="cityname"/>
-              <datalist id="cityname">
-                <option value="Boston"/>
-                <option value="Cambridge"/>
-              </datalist>
-            </div>
             <div className="col-md-6">
               <TxtSubmission/>
             </div>
@@ -161,9 +151,7 @@ export class EditTable extends React.Component {
     }
     else{
       return(
-        <div>
-          Loading...
-        </div>
+        <></>
       );
     }
   }

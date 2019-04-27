@@ -22,6 +22,8 @@ export class CubeEditContainer extends React.Component {
         this.cubeCards = response.data[0];
         this.editCards = response.data[1];
 
+        console.log(this.editCards);
+
         this.setState({
           rendered: true
         });
