@@ -33,17 +33,7 @@ exports.getCubeMFCards = function(req, res) {
 
 //gets cards that share a cname with cards in a cube to facilitate swapping sets
 exports.getEditCards = function(req, res) {
-  var names = "";
-  if(req.cube_cards.length > 0){
-      names += "\"" + req.cube_cards[0].cname + "\"";
-  }
-  else{
-    names = "\"\"";
-  }
-  for(var i = 1; i < req.cube_cards.length; i+=1){
-    names += ", \"" + req.cube_cards[i].cname + "\"";
-  }
-  var query = "Select * from card where cname in (" + names + ")";
+  var query = "select * from card where cname in (select card.cname from card as c,cube_card as cc where cc.cube_id = " + req.cube_id + " and c.id = cc.id) order by cname";
   server.connection.query(query, function(err, rows, fields){
     if(err){
       console.log(err);
