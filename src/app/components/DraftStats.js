@@ -23,31 +23,17 @@ export class DraftStats extends React.Component {
     this.unhighlight = this.unhighlight.bind(this);
 
     //cube card information
-    this.cubeCards;
-    this.mfCards;
-    this.draftStats;
-    this.cardsWithStats = [];
+    this.draftStats; //holds all info about each card
+    this.cardsWithStats = []; //hold information we need about each card
   }
 
-  //async calls to API to get cube and draft pick priority information
+  //async calls to API
   componentDidMount() {
-    //get draft information
+    //get draft information coupled with card information
     axios.get("/api/draft/" + this.cube_id).then(
       response => {
         //save cube card information
         this.draftStats = response.data;
-      },
-      error => {
-        console.log(error);
-      }
-    );
-    //get cube information
-    axios.get("/api/cube/" + this.cube_id).then(
-      response => {
-        //save cube card information
-        this.cubeCards = response.data[0];
-        this.mfCards = response.data[1];
-
         this.getDraftPriority();
       },
       error => {
@@ -56,36 +42,33 @@ export class DraftStats extends React.Component {
     );
   }
 
-  //combines card info and draft priority into packs
+  //calculate normalized priority from non_normalized and number of times drafted
   getDraftPriority() {
-    for(var i = 0; i < this.cubeCards.length; i+=1){
-      var entry = {
-        card: this.cubeCards[i],
-        priority: 7.5,
-        non_normalized: 7.5,
-        count: 0
-      };
+    for(let i = 0; i < this.draftStats.length; i++){
+      var nn = this.draftStats[i].non_normalized;
+      var count = this.draftStats[i].count;
+      var entry;
 
-      //calculate the average draft priority for all cards
-      var total = 0;
-      var count = 0;
-      for(var k = 0; k < this.draftStats.length; k++){
-        if(entry.card.id == this.draftStats[k].id){
-          count++;
-          total += this.draftStats[k].pick;
+      if(count > 1){
+        entry = {
+          card: this.draftStats[i],
+          priority: nn + (7.5 - nn)/count
         }
       }
-      if(count > 0){
-        entry.priority = total/count + (7.5-(total/count))/count;
-        entry.non_normalized = total/count;
-        entry.count = count;
+      else{
+        entry = {
+          card: this.draftStats[i],
+          priority: 7.5
+        }
       }
+
       this.cardsWithStats.push(entry);
     }
+
     this.sortByElement("priority", true);
   }
 
-  //sort by a certain element and direction pairing
+  //sort by a certain element and with a directional selection
   sortByElement(element, dir) {
     if(element === "priority"){
       this.cardsWithStats.sort(function(a,b){
@@ -98,9 +81,9 @@ export class DraftStats extends React.Component {
     else if(element === "count"){
       this.cardsWithStats.sort(function(a,b){
         if(dir === true)
-          return a.count - b.count;
+          return a.card.count - b.card.count;
         else
-          return b.count - a.count;
+          return b.card.count - a.card.count;
       });
     }
     else if(element === "name"){
@@ -114,9 +97,9 @@ export class DraftStats extends React.Component {
     else if(element === "nn"){
       this.cardsWithStats.sort(function(a,b){
         if(dir === true)
-          return a.non_normalized - b.non_normalized;
+          return a.card.non_normalized - b.card.non_normalized;
         else
-          return b.non_normalized - a.non_normalized;
+          return b.card.non_normalized - a.card.non_normalized;
       });
     }
     else if(element === "color"){
@@ -186,8 +169,8 @@ export class DraftStats extends React.Component {
                         <td>{stat.card.cname}</td>
                         <td>{stat.card.cc_color}</td>
                         <td>{stat.priority}</td>
-                        <td>{stat.non_normalized}</td>
-                        <td>{stat.count}</td>
+                        <td>{stat.card.non_normalized}</td>
+                        <td>{stat.card.count}</td>
                       </tr>
                     );
                   })}

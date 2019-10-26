@@ -17,11 +17,8 @@ var validatePassword = function(password, hash, callback){
 //configure the strategy
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    console.log(username);
-    console.log(password);
     //find a user that matches the username
     server.connection.query("select * from player where username = \"" + username + "\"", function(err, rows, fields){
-      console.log(rows);
       if(err){
         return done(err);
       }
