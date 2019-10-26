@@ -67,8 +67,8 @@ export class DraftWindow extends React.Component {
                 <tr>
                   {this.row1.map(function(pack, i){
                     return(
-                      <td key={pack.card.id} onClick={function(){ player_pick(pack_i, i) }}>
-                        <CardImage id={pack.card.id}/>
+                      <td key={pack.id} onClick={function(){ player_pick(pack_i, i) }}>
+                        <CardImage id={pack.id}/>
                       </td>
                     );
                   }, this)}
@@ -76,8 +76,8 @@ export class DraftWindow extends React.Component {
                 <tr style={{display: (this.props.pack.length > 8) ? '' : 'none'}}>
                   {this.row2.map(function(pack, i){
                     return(
-                      <td key={pack.card.id} onClick={function(){ player_pick(pack_i, i + 8) }}>
-                        <CardImage id={pack.card.id}/>
+                      <td key={pack.id} onClick={function(){ player_pick(pack_i, i + 8) }}>
+                        <CardImage id={pack.id}/>
                       </td>
                     );
                   }, this)}

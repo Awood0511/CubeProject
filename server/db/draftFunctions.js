@@ -4,7 +4,7 @@ var server = require("../config/express.js"),
 //get the statistics for all the previous drafts linked to the card they are for
 exports.getDraftStats = function(req, res){
   var cube_id = req.cube_id;
-  var query = "SELECT c.*, cc.color as cc_color, cc.main_type, cc.copies, TIMES_DRAFTED_IN_CUBE(cc.cube_id, c.cname) as count, PRIORITY_WITHIN_CUBE(cc.cube_id, c.cname) as non_normalized"
+  var query = "SELECT c.*, cc.color as cc_color, cc.main_type, cc.copies, TIMES_DRAFTED_IN_CUBE(cc.cube_id, c.cname) as count, PRIORITY_WITHIN_CUBE(cc.cube_id, c.cname) as priority"
   + " FROM card as c, cube_card as cc WHERE cc.cube_id = " + cube_id + " AND cc.id = c.id GROUP BY c.cname";
   server.connection.query(query, function(error, rows, fields) {
     if(error){

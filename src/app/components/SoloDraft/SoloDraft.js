@@ -8,7 +8,9 @@ export class SoloDraft extends React.Component {
   constructor() {
     super();
     this.state = {
-      rendered: false,
+      createdDraft: false,
+      randomizedPacks: false,
+      receivedCardInfo: false,
       pack: 1,
       pick: 1
     };
@@ -21,16 +23,14 @@ export class SoloDraft extends React.Component {
 
     //bind functions
     this.randomize = this.randomize.bind(this);
-    this.getDraftPriority = this.getDraftPriority.bind(this);
     this.getDateTime = this.getDateTime.bind(this);
     this.ai_pick = this.ai_pick.bind(this);
     this.log_player_pick = this.log_player_pick.bind(this);
     this.player_pick = this.player_pick.bind(this);
 
     //cube card information
-    this.cubeCards;
     this.mfCards;
-    this.draftStats;
+    this.draftCards;
     this.packs = [[],[],[],[],[],[],[],[], [],[],[],[],[],[],[],[], [],[],[],[],[],[],[],[]];
 
     //picks for each "player"
@@ -46,16 +46,9 @@ export class SoloDraft extends React.Component {
     }).then(
       response => {
         this.draft_id = response.data.insertId;
-      },
-      error => {
-        console.log(error);
-      }
-    );
-    //get draft information
-    axios.get("/api/draft/" + this.cube_id).then(
-      response => {
-        //save cube card information
-        this.draftStats = response.data;
+        this.setState({
+          createdDraft: true
+        });
       },
       error => {
         console.log(error);
@@ -65,9 +58,20 @@ export class SoloDraft extends React.Component {
     axios.get("/api/cube/" + this.cube_id).then(
       response => {
         //save cube card information
-        this.cubeCards = response.data[0];
         this.mfCards = response.data[1];
-
+        this.setState({
+          receivedCardInfo: true
+        });
+      },
+      error => {
+        console.log(error);
+      }
+    );
+    //get draft information
+    axios.get("/api/draft/" + this.cube_id).then(
+      response => {
+        //save cube card information
+        this.draftCards = response.data;
         this.randomize();
       },
       error => {
@@ -105,45 +109,26 @@ export class SoloDraft extends React.Component {
     this.draft_time = dateTime;
   }
 
-  //fischer-yates shuffle on the cubeCards
+  //fischer-yates shuffle on the draftCards
+  //then it pushes the cards into the packs array
   randomize() {
-    var m = this.cubeCards.length;
+    var m = this.draftCards.length;
     var temp;
     var index;
 
     while(m){
       index = Math.floor(Math.random() * m--);
-      temp = this.cubeCards[m];
-      this.cubeCards[m] = this.cubeCards[index];
-      this.cubeCards[index] = temp;
+      temp = this.draftCards[m];
+      this.draftCards[m] = this.draftCards[index];
+      this.draftCards[index] = temp;
     }
-    this.getDraftPriority();
-  }
 
-  //combines card info and draft priority into packs
-  getDraftPriority() {
-    for(var i = 0; i < this.cubeCards.length; i+=1){
-      var entry = {
-        card: this.cubeCards[i],
-        priority: 7.5
-      };
-
-      //calculate the average draft priority for all cards
-      var total = 0;
-      var count = 0;
-      for(var k = 0; k < this.draftStats.length; k++){
-        if(entry.card.id == this.draftStats[k].id){
-          count++;
-          total += this.draftStats[k].pick;
-        }
-      }
-      if(count > 0){
-        entry.priority = total/count + (7.5-(total/count))/count;
-      }
-      this.packs[Math.floor(i/15)].push(entry);
+    for(var i = 0; i < this.draftCards.length; i+=1){
+      this.packs[Math.floor(i/15)].push(this.draftCards[i]);
     }
+
     this.setState({
-      rendered: true
+      randomizedPacks: true
     });
   }
 
@@ -183,7 +168,7 @@ export class SoloDraft extends React.Component {
       console.log("Index of Best: " + indexOfBest);
       console.log(best);
       //splice out highest priority card and add it to the ai's picks
-      this.picks[i].push(best.card);
+      this.picks[i].push(best);
       this.packs[pack_i].splice(indexOfBest,1);
     }
 
@@ -209,7 +194,7 @@ export class SoloDraft extends React.Component {
     console.log(pack_i);
     //splice out the index
     var choice = this.packs[pack_i][i];
-    this.picks[0].push(choice.card);
+    this.picks[0].push(choice);
     this.packs[pack_i].splice(i,1);
     this.log_player_pick(choice);
     this.ai_pick();
@@ -218,7 +203,7 @@ export class SoloDraft extends React.Component {
   //saves the pick into the database
   log_player_pick(draftCard){
     axios.post('/api/draft/pick/' + this.draft_id, {
-      id: draftCard.card.id,
+      id: draftCard.id,
       pack: this.state.pack,
       pick: this.state.pick
     }).then(
@@ -281,7 +266,7 @@ export class SoloDraft extends React.Component {
       );
     }
     //display loading when waiting for packs to load
-    else if(this.state.rendered == false){
+    else if(this.state.createdDraft == false || this.state.receivedCardInfo == false || this.state.randomizedPacks == false){
       return (
         <div>
           Loading...
